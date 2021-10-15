@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     public float dashDistance;
     public float dashChargeTime;
     public float dashSpeed;
-    public HealthBar healthBar;
 
     public GameObject deathEffect;
     public SpriteRenderer sr;
@@ -35,7 +34,6 @@ public class Player : MonoBehaviour
     {
         AssignComponents();
         deathTime = Time.time + deathTime_MAX;
-        healthBarPos = healthBar.transform.position - transform.position;
         movementSpeed = movementSpeedInit;
         weaponHandler.Set();
     }
@@ -54,9 +52,6 @@ public class Player : MonoBehaviour
         if(Time.time > deathTime) 
             Die();
         timeRemaing = deathTime - Time.time;
-
-        healthBar.SetHealth(timeRemaing / deathTime_MAX);
-        healthBar.transform.position = transform.position + healthBarPos;
 
         if (charged)
         {
@@ -101,7 +96,6 @@ public class Player : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(movementDirection.y, movementDirection.x) + 90);
                 lookDirection = movementDirection;
             }
-
         }
     }
 
@@ -187,6 +181,11 @@ public class Player : MonoBehaviour
 
     }
 
+    public float GetCurrentHealth()
+    {
+        return timeRemaing / deathTime_MAX;
+    }
+
     public void SetAnimation()
     {
         string stateName = "";
@@ -246,7 +245,7 @@ public class Player : MonoBehaviour
         ScoreKeeper.ReigisterDeath(playerWhoHitMeLastIndex, PlayerManager.GetIndex(GetComponent<PlayerInput>()));
         playerWhoHitMeLastIndex = -1;
         MultipleTargetCamera.instance.targets.Remove(transform);
-        GetComponent<PlayerUI>().Disable(true);
+        GetComponent<PlayerUI>().Disable();
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
         Instantiate(deathEffect, transform.position, Quaternion.identity).transform.localScale = transform.localScale;

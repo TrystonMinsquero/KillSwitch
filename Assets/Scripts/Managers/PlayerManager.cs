@@ -67,7 +67,6 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Setting up for Lobby");
             PlayerInputManager.instance.joinBehavior = PlayerJoinBehavior.JoinPlayersWhenJoinActionIsTriggered;
             PlayerInputManager.instance.EnableJoining();
-            PlayerInputManager.instance.splitScreen = false;
             foreach (PlayerInput player in players)
                 if(player)
                     player.GetComponent<PlayerUI>().Disable();
@@ -77,7 +76,6 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Setting up for Game");
             PlayerInputManager.instance.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
             PlayerInputManager.instance.DisableJoining();
-            PlayerInputManager.instance.splitScreen = true;
             foreach (PlayerInput player in players)
                 if(player)
                     player.GetComponent<PlayerUI>().Enable();

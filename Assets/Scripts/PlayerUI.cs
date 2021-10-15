@@ -7,6 +7,9 @@ public class PlayerUI : MonoBehaviour
     [HideInInspector]
     public PlayerInput playerInput;
     public Behaviour[] behaviours;
+    public GameObject healthBarPrefab;
+    public Transform healthBarStart;
+    public HealthBar healthBar;
     
 
     private void Awake()
@@ -17,11 +20,38 @@ public class PlayerUI : MonoBehaviour
 
     }
 
+    public void InstantiateHealthBar()
+    {
+        healthBar = Instantiate(healthBarPrefab).GetComponentInChildren<HealthBar>();
+        if(healthBarStart != null)
+            healthBar.offset = healthBarStart.position - transform.position;
+        healthBar.SetPosition(transform.position);
+    }
+
+    public void Start()
+    {
+        if (healthBar == null)
+            InstantiateHealthBar();
+    }
+
+    private void Update()
+    {
+        if (healthBar != null)
+        {
+            healthBar.SetPosition(transform.position);
+            healthBar.SetHealth(GetComponent<Player>().GetCurrentHealth());
+        }
+        else
+            InstantiateHealthBar();
+    }
+
     public void Enable()
     {
         foreach (Behaviour component in behaviours)
             component.enabled = true;
-
+        if (healthBar == null)
+            InstantiateHealthBar();
+        healthBar.Enable();
         Player player = GetComponent<Player>();
         player.AssignComponents();
         player.sr.enabled = true;
@@ -29,7 +59,7 @@ public class PlayerUI : MonoBehaviour
         player.weaponHandler.flashSR.enabled = true;
         GetComponent<PlayerController>().EnableControls(true);
     }
-    public void Disable(bool camEnabled = false)
+    public void Disable()
     {
         Player player = GetComponent<Player>();
         player.AssignComponents();
@@ -38,8 +68,10 @@ public class PlayerUI : MonoBehaviour
         player.weaponHandler.flashSR.enabled = false;
         GetComponent<PlayerController>().EnableControls(false);
         foreach (Behaviour component in behaviours)
-            if (!(camEnabled && component == GetComponent<PlayerInput>().camera))
-                component.enabled = false;
+            component.enabled = false;
+        if (healthBar == null)
+            InstantiateHealthBar();
+        healthBar.Disable();
     }
 
     //UI Actions

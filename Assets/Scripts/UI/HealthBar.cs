@@ -8,10 +8,9 @@ public class HealthBar : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public Image fill;
+    public Vector3 offset;
 
-    private Quaternion initRotation;
-
-
+    
     public void SetHealth(float health)
     {
         slider.value = health;
@@ -20,14 +19,19 @@ public class HealthBar : MonoBehaviour
         
     }
 
-    private void Start()
+    public void SetPosition(Vector3 position)
     {
-        initRotation = transform.rotation;
+        transform.position = position + offset;
     }
 
-    private void LateUpdate()
+    public void Disable()
     {
-        transform.rotation = initRotation;
+        GetComponentInParent<Transform>().gameObject.SetActive(false);
+    }
+    public void Enable()
+    {
+        GetComponentInParent<Transform>().gameObject.SetActive(true);
+        gameObject.SetActive(true);
     }
 
 }
