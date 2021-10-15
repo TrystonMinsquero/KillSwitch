@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - NPC
+  - Projectile
+  - Patrol Path
+  - Patrol Point
+  - Spawn Point
+  - Wall
+  - Camera
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - Entity
+  - Wall
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 4026776415
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Static Colliders
+    uniqueID: 1548011427
+    locked: 0
+  - name: Players NPC
+    uniqueID: 2791782031
+    locked: 0
+  - name: Projectiles
+    uniqueID: 3953082523
+    locked: 0

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7fc54f6dcc49dc45b71ffffb1971cdc, type: 3}
+  m_Name: Shotgun 2
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 1, b: 1, a: 1}
+  weaponAoc: {fileID: 22100000, guid: 5af613160a798b0438b87ca45d2e99f0, type: 2}
+  flashAoc: {fileID: 22100000, guid: ff64a9fb6c72b074a8aeb67febb383c1, type: 2}
+  projectilePrefab: {fileID: 9037812320112203550, guid: 2ed54c7b36922db49a4c1ff129e8012f, type: 3}
+  weaponType: 1
+  fireDelay: 1
+  projectileSpeed: 15
+  range: 10
+  damage: 2
+  projectiles: []

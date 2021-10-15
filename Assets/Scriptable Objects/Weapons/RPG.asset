@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7fc54f6dcc49dc45b71ffffb1971cdc, type: 3}
+  m_Name: RPG
+  m_EditorClassIdentifier: 
+  color: {r: 0, g: 0.4056604, b: 0.006028756, a: 1}
+  sprite: {fileID: 2976352693066412358, guid: a252d89b1192e6c469298d7f5b48d2db, type: 3}
+  weaponAoc: {fileID: 22100000, guid: 420e9710fca9ead47931f42c91696663, type: 2}
+  flashSprite: {fileID: -91509202413294493, guid: 795ec4ba2fcc1fe44b8bea974f6a40cf, type: 3}
+  flashAoc: {fileID: 22100000, guid: dddfb075f4d1fcc4d8464127ae336903, type: 2}
+  projectilePrefab: {fileID: 9037812320112203550, guid: d73cdcfd473b8b64d9feb1a21fe114cc, type: 3}
+  weaponType: 2
+  fireDelay: 3.5
+  projectileSpeed: 10
+  range: 10
+  damage: 8
+  projectiles: []
