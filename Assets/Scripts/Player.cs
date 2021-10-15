@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public float timeRemaing;
     [HideInInspector]
     public float movementSpeed;
+    private bool godMode;
     private float deathTime;
     private bool charging;
     private bool charged;
@@ -49,9 +50,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if(Time.time > deathTime) 
+        if(Time.time > deathTime && !godMode) 
             Die();
-        timeRemaing = deathTime - Time.time;
+        if(!godMode)
+            timeRemaing = deathTime - Time.time;
 
         if (charged)
         {
@@ -154,6 +156,11 @@ public class Player : MonoBehaviour
         movementSpeed = movementSpeedInit;
     }
 
+    public void SetGodMode(bool enable)
+    {
+        godMode = enable;
+    }
+
     public void TakeOver(NPC_Controller npcc)
     {
         NPC npc = npcc.npc;
@@ -232,6 +239,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (godMode)
+            return;
         SFXManager.Play("Hit");
         if (damage <= 0)
             Die();
@@ -239,7 +248,7 @@ public class Player : MonoBehaviour
             deathTime -= damage;
     }
 
-    private void Die()
+    public void Die()
     {
         Debug.Log("Die");
         ScoreKeeper.ReigisterDeath(playerWhoHitMeLastIndex, PlayerManager.GetIndex(GetComponent<PlayerInput>()));

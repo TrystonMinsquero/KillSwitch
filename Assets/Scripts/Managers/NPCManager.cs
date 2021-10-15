@@ -110,4 +110,10 @@ public class NPCManager : MonoBehaviour
         LevelManager.patrolPathNPCCount[patrolPath] += 1;
         return newNPC;
     }
+
+    public static void KillALL()
+    {
+        for(int i = NPC_List.Count - 1; i >=0; i--)
+            KillNPC(NPC_List[i]);
+    }
 }

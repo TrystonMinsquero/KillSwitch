@@ -29,12 +29,16 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (DebugController.debugMode)
+            return;
         //Move
         player.Move(movementInput);
     }
 
     private void Update()
     {
+        if (DebugController.debugMode)
+            return;
         //Look
         player.Look(lookInput);
 
@@ -66,14 +70,14 @@ public class PlayerController : MonoBehaviour
     //UI Actions
     public void Join()
     {
-        if (PlayerManager.inLobby)
+        if (PlayerManager.inLobby || DebugController.debugMode)
             PlayerManager.instance.OnPlayerJoined(playerInput);
 
     }
 
     public void Leave()
     {
-        if (PlayerManager.inLobby)
+        if (PlayerManager.inLobby && !DebugController.debugMode)
             PlayerManager.instance.OnPlayerLeft(playerInput);
     }
 
@@ -91,7 +95,11 @@ public class PlayerController : MonoBehaviour
 
     public void OnShoot(InputAction.CallbackContext ctx) => shootInput = ctx.action.triggered;
 
-    public void OnSpawnt(InputAction.CallbackContext ctx) => spawnInput = ctx.action.triggered;
+    public void OnSpawn(InputAction.CallbackContext ctx) => spawnInput = ctx.action.triggered;
+
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered);
+
+    public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 
     private void OnEnable()
     {

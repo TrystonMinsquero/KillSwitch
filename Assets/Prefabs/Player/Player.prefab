@@ -58,7 +58,6 @@ MonoBehaviour:
   dashDistance: 3
   dashChargeTime: 0.73
   dashSpeed: 30
-  healthBar: {fileID: 4175796600016887350}
   deathEffect: {fileID: 3256664758702202174, guid: 58f840fe5c46a7c4883de45ee327f539, type: 3}
   sr: {fileID: 2377044252534902315}
   weaponHandler: {fileID: 0}
@@ -268,6 +267,70 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6f1725f0-3593-4bd3-9bb4-60119d69820b
     m_ActionName: Gameplay/Spawn[/Keyboard/space,/XInputControllerWindows/buttonWest,/XInputControllerWindows/buttonWest,/XInputControllerWindows/buttonWest,/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2377044252534902309}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnToggleDebug
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_ActionId: 2340df08-1439-4b58-af95-2540ef9f2821
+    m_ActionName: Gameplay/ToggleDebug[/Keyboard/backquote]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2377044252534902309}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnReturn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_ActionId: bb1cf68d-b5fe-4bc1-807f-4f0bca8f244d
+    m_ActionName: Gameplay/Return[/Keyboard/enter]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 983866352550524076}
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnToggleDebug
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1b6fc7c7-ae12-4dbe-93b4-6bbe5acbcf63
+    m_ActionName: UI/ToggleDebug[/Keyboard/backquote]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 983866352550524076}
+        m_TargetAssemblyTypeName: PlayerUI, Assembly-CSharp
+        m_MethodName: OnReturn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5598d735-e242-4565-8d4c-e29b2ba5c1bb
+    m_ActionName: UI/Return[/Keyboard/enter]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
@@ -516,17 +579,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8168527702744279456, guid: 8ad0dad2ba7b7954fb82659d865e1d2e, type: 3}
   m_PrefabInstance: {fileID: 3626997184832226686}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4175796600016887350 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 839576475585616712, guid: 8ad0dad2ba7b7954fb82659d865e1d2e, type: 3}
-  m_PrefabInstance: {fileID: 3626997184832226686}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15c03b9637b5cf14889dc6080a0d6efa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8056729667089843866
 PrefabInstance:
   m_ObjectHideFlags: 0

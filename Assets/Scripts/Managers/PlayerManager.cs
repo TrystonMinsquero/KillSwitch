@@ -65,7 +65,6 @@ public class PlayerManager : MonoBehaviour
         if (_inLobby)
         {
             Debug.Log("Setting up for Lobby");
-            PlayerInputManager.instance.joinBehavior = PlayerJoinBehavior.JoinPlayersWhenJoinActionIsTriggered;
             PlayerInputManager.instance.EnableJoining();
             foreach (PlayerInput player in players)
                 if(player)
@@ -74,7 +73,6 @@ public class PlayerManager : MonoBehaviour
         else
         {
             Debug.Log("Setting up for Game");
-            PlayerInputManager.instance.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
             PlayerInputManager.instance.DisableJoining();
             foreach (PlayerInput player in players)
                 if(player)
@@ -82,9 +80,16 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public static void SetJoinable(bool enabled)
+    {
+        if (enabled)
+            PlayerInputManager.instance.EnableJoining();
+        else
+            PlayerInputManager.instance.DisableJoining();
+    }
+
     public void OnPlayerJoined(PlayerInput playerInput)
     {
-        Debug.Log("Trying to Join Player: " + playerInput);
         AddPlayer(playerInput);
     }
 
@@ -111,7 +116,17 @@ public class PlayerManager : MonoBehaviour
         
         if (Contains(playerInput))
             return;
-        if (inLobby)
+        Debug.Log("Trying to Join Player: " + playerInput);
+        if (DebugController.debugJoin)
+        {
+            Debug.Log("Player Joined: " + (NextPlayerSlot() + 1));
+            playerInput.name = "Player " + (NextPlayerSlot() + 1);
+            playerInput.GetComponent<PlayerUI>().Disable();
+            if (!inLobby)
+                LevelManager.QueuePlayerToSpawn(playerInput.GetComponent<Player>());
+            players[NextPlayerSlot()] = playerInput;
+        }
+        else if (inLobby)
         {
             if (playerCount < 0 || playerCount >= players.Length || !LobbyManager.canJoin)
             {
@@ -119,14 +134,20 @@ public class PlayerManager : MonoBehaviour
                 return;
             }
             playerInput.GetComponent<PlayerUI>().Disable();
-            Debug.Log("Player Joined: " + playerInput.user.id);
-            playerInput.name = "Player " + playerInput.user.id;
+            Debug.Log("Player Joined: Player " + (NextPlayerSlot() + 1));
+            playerInput.name = "Player " + (NextPlayerSlot() + 1);
             players[NextPlayerSlot()] = playerInput;
             playerCount++;
         }
     }
 
-
+    public static void KillAll()
+    {
+        if (!inLobby)
+            foreach (PlayerInput player in players)
+                if (player != null)
+                    player.GetComponent<Player>().Die();
+    }
 
     public static void Remove(PlayerInput playerInput)
     {
@@ -138,7 +159,7 @@ public class PlayerManager : MonoBehaviour
                 if (players[i] != null && players[i] == playerInput)
                 {
                     players[i] = null;
-                    Debug.Log("Player Left: " + playerInput.user.index);
+                    Debug.Log("Player Left: " + playerInput.name);
                     Destroy(playerInput.gameObject);
                     playerCount--;
                     return;

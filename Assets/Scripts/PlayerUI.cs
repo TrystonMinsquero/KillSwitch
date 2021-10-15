@@ -77,19 +77,21 @@ public class PlayerUI : MonoBehaviour
     //UI Actions
     public void Join()
     {
-        if (PlayerManager.inLobby)
+        if (PlayerManager.inLobby || DebugController.debugMode)
             PlayerManager.instance.OnPlayerJoined(playerInput);
 
     }
 
     public void Leave()
     {
-        if (PlayerManager.inLobby)
+        if (PlayerManager.inLobby && !DebugController.debugMode)
             PlayerManager.instance.OnPlayerLeft(playerInput);
     }
 
     public void OnJoin(InputAction.CallbackContext ctx) => Join();
     public void OnLeave(InputAction.CallbackContext ctx) => Leave();
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered);
+    public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 
     private void OnEnable()
     {

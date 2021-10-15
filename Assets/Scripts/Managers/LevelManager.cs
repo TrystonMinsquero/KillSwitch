@@ -42,18 +42,20 @@ public class LevelManager : MonoBehaviour
         else
             instance = this;
 
-        gameTime = _gameTimeInSec;
+        if(_gameTimeInSec > 0)
+            gameTime = _gameTimeInSec;
+        SetGameTime(gameTime);
+
         maxPopulation = _maxPopulation;
         minPopulation = _minPopulation;
         spawnDelay = _spawnDelay;
         canSpawnPlayerTime = Time.time;
-        gameTimeEnd = Time.time + gameTime;
         needToSpawn = true;
 
         playersToSpawn = new Queue<Player>();
         patrolPathNPCCount = new Dictionary<PatrolPath, int>();
 
-}
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -222,8 +224,12 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+    }
 
-
+    public static void SetGameTime(float time)
+    {
+        gameTime = time;
+        gameTimeEnd = Time.time + time;
     }
 
     public string formatTime(float time)

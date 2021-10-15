@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/Controls/Controls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/Controls/Controls.inputactions'
 
 using System;
 using System.Collections;
@@ -54,6 +54,22 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""name"": ""Spawn"",
                     ""type"": ""Button"",
                     ""id"": ""6f1725f0-3593-4bd3-9bb4-60119d69820b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleDebug"",
+                    ""type"": ""Button"",
+                    ""id"": ""2340df08-1439-4b58-af95-2540ef9f2821"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""bb1cf68d-b5fe-4bc1-807f-4f0bca8f244d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -312,6 +328,28 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Spawn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fee8fdd4-9433-47e9-86e9-ae7b0a765933"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDebug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14d6cf70-892f-40f7-bb61-4b3ac0508814"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -347,6 +385,22 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""name"": ""Join"",
                     ""type"": ""Button"",
                     ""id"": ""ce558493-2054-4dd0-a623-8e80f5a36094"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleDebug"",
+                    ""type"": ""Button"",
+                    ""id"": ""1b6fc7c7-ae12-4dbe-93b4-6bbe5acbcf63"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""5598d735-e242-4565-8d4c-e29b2ba5c1bb"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -671,6 +725,50 @@ public class @Controls : IInputActionCollection, IDisposable
                     ""action"": ""Join"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07de1d95-c205-4996-ad06-976fb7827c42"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDebug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Shift+Enter"",
+                    ""id"": ""6302dbb2-89fb-4aaa-b401-1a3d40f57a7f"",
+                    ""path"": ""ButtonWithOneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Modifier"",
+                    ""id"": ""9783c5c1-8fdc-47cc-89b6-4265b2a0b898"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Button"",
+                    ""id"": ""ae18109a-d111-423a-93f9-7b24d90bf655"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -684,12 +782,16 @@ public class @Controls : IInputActionCollection, IDisposable
         m_Gameplay_Look = m_Gameplay.FindAction("Look", throwIfNotFound: true);
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_Spawn = m_Gameplay.FindAction("Spawn", throwIfNotFound: true);
+        m_Gameplay_ToggleDebug = m_Gameplay.FindAction("ToggleDebug", throwIfNotFound: true);
+        m_Gameplay_Return = m_Gameplay.FindAction("Return", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
         m_UI_Leave = m_UI.FindAction("Leave", throwIfNotFound: true);
         m_UI_Join = m_UI.FindAction("Join", throwIfNotFound: true);
+        m_UI_ToggleDebug = m_UI.FindAction("ToggleDebug", throwIfNotFound: true);
+        m_UI_Return = m_UI.FindAction("Return", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -744,6 +846,8 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Look;
     private readonly InputAction m_Gameplay_Shoot;
     private readonly InputAction m_Gameplay_Spawn;
+    private readonly InputAction m_Gameplay_ToggleDebug;
+    private readonly InputAction m_Gameplay_Return;
     public struct GameplayActions
     {
         private @Controls m_Wrapper;
@@ -753,6 +857,8 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_Gameplay_Look;
         public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
         public InputAction @Spawn => m_Wrapper.m_Gameplay_Spawn;
+        public InputAction @ToggleDebug => m_Wrapper.m_Gameplay_ToggleDebug;
+        public InputAction @Return => m_Wrapper.m_Gameplay_Return;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -777,6 +883,12 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Spawn.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpawn;
                 @Spawn.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpawn;
                 @Spawn.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSpawn;
+                @ToggleDebug.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleDebug;
+                @ToggleDebug.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleDebug;
+                @ToggleDebug.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnToggleDebug;
+                @Return.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnReturn;
+                @Return.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnReturn;
+                @Return.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnReturn;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -796,6 +908,12 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Spawn.started += instance.OnSpawn;
                 @Spawn.performed += instance.OnSpawn;
                 @Spawn.canceled += instance.OnSpawn;
+                @ToggleDebug.started += instance.OnToggleDebug;
+                @ToggleDebug.performed += instance.OnToggleDebug;
+                @ToggleDebug.canceled += instance.OnToggleDebug;
+                @Return.started += instance.OnReturn;
+                @Return.performed += instance.OnReturn;
+                @Return.canceled += instance.OnReturn;
             }
         }
     }
@@ -808,6 +926,8 @@ public class @Controls : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_Navigate;
     private readonly InputAction m_UI_Leave;
     private readonly InputAction m_UI_Join;
+    private readonly InputAction m_UI_ToggleDebug;
+    private readonly InputAction m_UI_Return;
     public struct UIActions
     {
         private @Controls m_Wrapper;
@@ -816,6 +936,8 @@ public class @Controls : IInputActionCollection, IDisposable
         public InputAction @Navigate => m_Wrapper.m_UI_Navigate;
         public InputAction @Leave => m_Wrapper.m_UI_Leave;
         public InputAction @Join => m_Wrapper.m_UI_Join;
+        public InputAction @ToggleDebug => m_Wrapper.m_UI_ToggleDebug;
+        public InputAction @Return => m_Wrapper.m_UI_Return;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -837,6 +959,12 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Join.started -= m_Wrapper.m_UIActionsCallbackInterface.OnJoin;
                 @Join.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnJoin;
                 @Join.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnJoin;
+                @ToggleDebug.started -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleDebug;
+                @ToggleDebug.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleDebug;
+                @ToggleDebug.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnToggleDebug;
+                @Return.started -= m_Wrapper.m_UIActionsCallbackInterface.OnReturn;
+                @Return.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnReturn;
+                @Return.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnReturn;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -853,6 +981,12 @@ public class @Controls : IInputActionCollection, IDisposable
                 @Join.started += instance.OnJoin;
                 @Join.performed += instance.OnJoin;
                 @Join.canceled += instance.OnJoin;
+                @ToggleDebug.started += instance.OnToggleDebug;
+                @ToggleDebug.performed += instance.OnToggleDebug;
+                @ToggleDebug.canceled += instance.OnToggleDebug;
+                @Return.started += instance.OnReturn;
+                @Return.performed += instance.OnReturn;
+                @Return.canceled += instance.OnReturn;
             }
         }
     }
@@ -864,6 +998,8 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnSpawn(InputAction.CallbackContext context);
+        void OnToggleDebug(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -871,5 +1007,7 @@ public class @Controls : IInputActionCollection, IDisposable
         void OnNavigate(InputAction.CallbackContext context);
         void OnLeave(InputAction.CallbackContext context);
         void OnJoin(InputAction.CallbackContext context);
+        void OnToggleDebug(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
     }
 }
