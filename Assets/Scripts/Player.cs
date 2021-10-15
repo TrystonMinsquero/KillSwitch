@@ -74,6 +74,15 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector2(input.x, input.y) * movementSpeed;
             rb.drag = input.sqrMagnitude > 0 ? 0 : 1;
         }
+        else if (charging)
+        {
+
+            if (input.sqrMagnitude > .1f)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(input.y, input.x) + 90);
+                lookDirection = input;
+            }
+        }
     }
 
     public void Look(Vector2 input)
@@ -236,6 +245,7 @@ public class Player : MonoBehaviour
         Debug.Log("Die");
         ScoreKeeper.ReigisterDeath(playerWhoHitMeLastIndex, PlayerManager.GetIndex(GetComponent<PlayerInput>()));
         playerWhoHitMeLastIndex = -1;
+        MultipleTargetCamera.instance.targets.Remove(transform);
         GetComponent<PlayerUI>().Disable(true);
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;

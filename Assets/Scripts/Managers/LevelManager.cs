@@ -164,6 +164,7 @@ public class LevelManager : MonoBehaviour
             if (SafeToSpawn(npc.transform.position, 4))
             {
                 NPCManager.SpawnPlayerFromNPC(player.GetComponent<PlayerUI>(), npc);
+                MultipleTargetCamera.instance.targets.Add(player.transform);
                 return true;
             }
         return false;

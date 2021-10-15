@@ -3,8 +3,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    Camera cam;
-
     [HideInInspector]
     public Player player;
     private PlayerInput playerInput;
@@ -26,7 +24,6 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         player = GetComponent<Player>();
-        cam = GetComponentInChildren<Camera>();
     }
     
 
@@ -48,12 +45,7 @@ public class PlayerController : MonoBehaviour
 
         //Shoot
         if (shootInput)
-            player.Shoot();
-
-
-
-        cam.transform.rotation = Quaternion.Euler(Vector3.zero);
-        
+            player.Shoot();     
 
     }
 
