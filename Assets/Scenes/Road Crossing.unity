@@ -20329,13 +20329,7 @@ MonoBehaviour:
   _spawnDelay: 4
   timeText: {fileID: 1039139231}
   leaderboard: {fileID: 363875790}
-  patrolPathsObj:
-  - {fileID: 522611110}
-  - {fileID: 355186731}
-  - {fileID: 2118867181}
-  - {fileID: 1359902691}
-  - {fileID: 467527767}
-  - {fileID: 752052202}
+  patrolPathsObj: {fileID: 543025290}
 --- !u!4 &1450646540
 Transform:
   m_ObjectHideFlags: 0

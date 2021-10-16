@@ -22,7 +22,7 @@ public class LevelManager : MonoBehaviour
     private static int minPopulation;
     private static float spawnDelay;
 
-    public GameObject[] patrolPathsObj;
+    public GameObject patrolPathsObj;
 
     private static bool needToSpawn;
     private static float canSpawnPlayerTime;
@@ -61,10 +61,15 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         //Gather Patrol Points
-        patrolPaths = new PatrolPath[patrolPathsObj.Length];
-        for(int i = 0; i < patrolPathsObj.Length; i++)
+        List<GameObject> patrolPathObjs = new List<GameObject>();
+        foreach (Transform patrolPath in patrolPathsObj.GetComponentsInChildren<Transform>())
+            if (patrolPath.CompareTag("Patrol Path"))
+                patrolPathObjs.Add(patrolPath.gameObject);
+                
+        patrolPaths = new PatrolPath[patrolPathObjs.Count];
+        for(int i = 0; i < patrolPathObjs.Count; i++)
         {
-            patrolPaths[i] = PatrolPath.GeneratePatrolPath(patrolPathsObj[i]);
+            patrolPaths[i] = PatrolPath.GeneratePatrolPath(patrolPathObjs[i]);
         }
 
         foreach (PatrolPath patrolPath in patrolPaths)
