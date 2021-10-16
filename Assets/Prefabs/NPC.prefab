@@ -51,12 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f0c018de9276c240b2f317872fb6421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc: {fileID: 11400000, guid: 3d2e6b21850e57a408b227148e583e4d, type: 2}
+  npc: {fileID: 0}
   weaponHandler: {fileID: 0}
   movementSpeed: 3
   patrolPathObj: {fileID: 0}
   patrolPath:
-    spawnPoint: {fileID: 0}
     patrolpoints: []
 --- !u!212 &4862974284002695763
 SpriteRenderer:
@@ -77,7 +76,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
