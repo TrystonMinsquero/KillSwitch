@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     public static PlayerInputManager playerInputManager;
     public static bool inLobby;
+    public static bool startedInLobby;
 
     public static PlayerInput[] players = new PlayerInput[8];
     public static int playerCount;
@@ -30,7 +31,6 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
-        inLobby = LobbyManager.instance != null;
         //Debug.Log("inLobby = " + inLobby);
     }
 
@@ -47,6 +47,9 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         _players = players;
+        //Debug.Log("inLobby: " + inLobby);
+        //Debug.Log("debug join: " + DebugController.debugJoin);
+
     }
 
     public static bool Contains(PlayerInput _player)
@@ -82,6 +85,7 @@ public class PlayerManager : MonoBehaviour
 
     public static void SetJoinable(bool enabled)
     {
+        DebugController.debugJoin = enabled;
         if (enabled)
             PlayerInputManager.instance.EnableJoining();
         else
@@ -125,6 +129,7 @@ public class PlayerManager : MonoBehaviour
             if (!inLobby)
                 LevelManager.QueuePlayerToSpawn(playerInput.GetComponent<Player>());
             players[NextPlayerSlot()] = playerInput;
+            playerCount++;
         }
         else if (inLobby)
         {

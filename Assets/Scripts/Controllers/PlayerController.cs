@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     bool dashInput;
     bool shootInput;
     bool spawnInput;
+    bool debugging;
 
     private void Awake()
     {
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (DebugController.debugMode)
+        if (debugging)
             return;
         //Move
         player.Move(movementInput);
@@ -37,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (DebugController.debugMode)
+        if (debugging)
             return;
         //Look
         player.Look(lookInput);
@@ -51,6 +52,11 @@ public class PlayerController : MonoBehaviour
         if (shootInput)
             player.Shoot();     
 
+    }
+
+    public void Debug(bool debugging)
+    {
+        this.debugging = debugging;
     }
 
     public void EnableControls(bool enabled)
@@ -70,13 +76,17 @@ public class PlayerController : MonoBehaviour
     //UI Actions
     public void Join()
     {
-        if (PlayerManager.inLobby || DebugController.debugMode)
+        if (debugging)
+            return;
+        if (PlayerManager.inLobby || DebugController.debugJoin)
             PlayerManager.instance.OnPlayerJoined(playerInput);
 
     }
 
     public void Leave()
     {
+        if (debugging)
+            return;
         if (PlayerManager.inLobby && !DebugController.debugMode)
             PlayerManager.instance.OnPlayerLeft(playerInput);
     }
@@ -97,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSpawn(InputAction.CallbackContext ctx) => spawnInput = ctx.action.triggered;
 
-    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered);
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, playerInput);
 
     public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 

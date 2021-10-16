@@ -10,7 +10,7 @@ public class PlayerUI : MonoBehaviour
     public GameObject healthBarPrefab;
     public Transform healthBarStart;
     public HealthBar healthBar;
-    
+    bool debugging;
 
     private void Awake()
     {
@@ -74,23 +74,33 @@ public class PlayerUI : MonoBehaviour
         healthBar.Disable();
     }
 
+    public void Debug(bool debugging)
+    {
+        this.debugging = debugging;
+    }
+
+
     //UI Actions
     public void Join()
     {
-        if (PlayerManager.inLobby || DebugController.debugMode)
+        if (debugging)
+            return;
+        if (PlayerManager.inLobby || DebugController.debugJoin)
             PlayerManager.instance.OnPlayerJoined(playerInput);
 
     }
 
     public void Leave()
     {
+        if (debugging)
+            return;
         if (PlayerManager.inLobby && !DebugController.debugMode)
             PlayerManager.instance.OnPlayerLeft(playerInput);
     }
 
     public void OnJoin(InputAction.CallbackContext ctx) => Join();
     public void OnLeave(InputAction.CallbackContext ctx) => Leave();
-    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered);
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, playerInput);
     public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 
     private void OnEnable()

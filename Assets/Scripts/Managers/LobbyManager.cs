@@ -22,6 +22,7 @@ public class LobbyManager : MonoBehaviour
             Destroy(this.gameObject);
         UpdateJoinBoxes();
         PlayerManager.OnSceneChange(true);
+        PlayerManager.startedInLobby = true;
 
         canJoin = true;
         howToPlayButton.Select();

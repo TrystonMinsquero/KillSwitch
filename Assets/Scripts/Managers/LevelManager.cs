@@ -72,7 +72,10 @@ public class LevelManager : MonoBehaviour
 
         foreach (PatrolPath patrolPath in patrolPaths)
             SpawnNPC(patrolPath);
+        Debug.Log("Lobby Manager instance == null: " + LobbyManager.instance == null);
         PlayerManager.OnSceneChange(false);
+        if (!PlayerManager.startedInLobby)
+            PlayerManager.SetJoinable(true);
         ScoreKeeper.OnSceneChange();
         MusicManager.StartMusic(false);
 
