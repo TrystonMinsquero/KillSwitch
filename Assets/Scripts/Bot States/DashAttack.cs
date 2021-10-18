@@ -24,8 +24,11 @@ public class DashAttack : IState
 
     public void Tick()
     {
+        //Fix later
+        /*
         if(bot.target != null)
             player.lookDirection = (bot.target.position - player.transform.position).normalized;
+        */
         player.StartDash();
     }
 }

@@ -13,14 +13,13 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   color: {r: 1, g: 0, b: 0.81475544, a: 1}
-  sprite: {fileID: 7353473222028545783, guid: 84918a09844a92e4a93584c695e0e1d9, type: 3}
   weaponAoc: {fileID: 22100000, guid: 5af613160a798b0438b87ca45d2e99f0, type: 2}
-  flashSprite: {fileID: 2503285875812257630, guid: 5ea536f20b41d5846bc60fd5b2e7a718, type: 3}
   flashAoc: {fileID: 22100000, guid: ff64a9fb6c72b074a8aeb67febb383c1, type: 2}
   projectilePrefab: {fileID: 9037812320112203550, guid: 2ed54c7b36922db49a4c1ff129e8012f, type: 3}
   weaponType: 1
+  peircing: 1
+  explodes: 0
   fireDelay: 0.8
   projectileSpeed: 15
   range: 5
-  damage: 3
-  projectiles: []
+  damage: 0

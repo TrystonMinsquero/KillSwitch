@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    [Header("Attributes")]
     public float deathTime_MAX;
     public float dashDamage;
     public float movementSpeedInit;
@@ -11,21 +12,24 @@ public class Player : MonoBehaviour
     public float dashChargeTime;
     public float dashSpeed;
 
+    [Header("Draggables")]
     public GameObject deathEffect;
-    public SpriteRenderer sr;
-    private Animator anim;
-    private Rigidbody2D rb;
-    public WeaponHandler weaponHandler;
 
+    //Components
+    private Rigidbody2D rb;
     [HideInInspector]
-    public Vector2 lookDirection;
-    private Vector3 healthBarPos;
-    [HideInInspector]
-    public float timeRemaing;
-    [HideInInspector]
-    public float movementSpeed;
-    private bool godMode;
+    private WeaponHandler weaponHandler;
+
+    //trackers
+    private Vector2 lookDirection;
+    private float movementSpeed;
+
+    //Times
+    private float timeRemaing;
     private float deathTime;
+
+    //Statuses
+    private bool godMode;
     private bool charging;
     private bool charged;
     private bool dashing;
@@ -41,24 +45,19 @@ public class Player : MonoBehaviour
 
     public void AssignComponents()
     {
-
-        sr = GetComponent<SpriteRenderer>();
+        GetComponent<PlayerUI>().AssignComponents();
         rb = GetComponent<Rigidbody2D>();
         weaponHandler = GetComponentInChildren<WeaponHandler>();
-        anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         if(Time.time > deathTime && !godMode) 
             Die();
-        if(!godMode)
-            timeRemaing = deathTime - Time.time;
+        timeRemaing =  !godMode ? deathTime - Time.time : deathTime_MAX;
 
         if (charged)
-        {
             StartCoroutine(Dash());
-        }
 
         rb.angularVelocity = 0;
         SetAnimation();
@@ -76,8 +75,7 @@ public class Player : MonoBehaviour
 
             if (input.sqrMagnitude > .1f)
             {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(input.y, input.x) + 90);
-                lookDirection = input;
+                SetRotation(input);
             }
         }
     }
@@ -87,25 +85,38 @@ public class Player : MonoBehaviour
         if (!dashing)
         {
             Vector2 movementDirection = rb.velocity.normalized;
+
             //Look
             if (input.sqrMagnitude > .1f)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(input.y, input.x) + 90);
-                lookDirection = input;
-            }
+                SetRotation(input);
             else if (movementDirection.sqrMagnitude > 0 && !charging && !charged)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(movementDirection.y, movementDirection.x) + 90);
-                lookDirection = movementDirection;
-            }
+                SetRotation(movementDirection);
         }
+    }
+
+    //Sets the rotation from a nomalized vector2 (like the unit circle)
+    private void SetRotation(Vector2 lookDir)
+    {
+        transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(lookDir.y, lookDir.x) + 90);
+        lookDirection = lookDir;
+    }
+
+    //Sets the direction from quaterion
+    private void SetRotation(Quaternion rotation)
+    {
+        Vector3 eulerRotation = rotation.eulerAngles;
+        eulerRotation.z += eulerRotation.z + 180 > 360 ? -180 : 180;
+        transform.rotation = Quaternion.Euler(eulerRotation);
+        float zRadian = (eulerRotation.z - 90) * Mathf.Deg2Rad;
+        lookDirection = new Vector2(Mathf.Cos(zRadian), Mathf.Sin(zRadian));
     }
 
     public void Shoot()
     {
         if(!charging && !dashing)
         {
-            weaponHandler.Shoot(this);
+            //Will change position later
+            weaponHandler.Shoot(GetComponent<PlayerInput>(), lookDirection.normalized);
         }
     }
 
@@ -127,6 +138,7 @@ public class Player : MonoBehaviour
         charged = true;
         charging = false;
     }
+
     private IEnumerator Dash()
     {
         rb.drag = 0;
@@ -164,9 +176,11 @@ public class Player : MonoBehaviour
     public void TakeOver(NPC_Controller npcc)
     {
         NPC npc = npcc.npc;
-        Debug.Log("Take Over " + npc.name);
-        SwitchVisuals(npcc);
+        weaponHandler.SwitchWeapons(npcc.weaponHandler);
+        GetComponent<PlayerUI>().SwitchVisuals(npcc);
         EndDash();
+        transform.position = npcc.transform.position;
+        SetRotation(npcc.transform.rotation);
         deathTime = Time.time + deathTime_MAX;
         npcc.Die();
 
@@ -174,23 +188,39 @@ public class Player : MonoBehaviour
 
     public void TakeOver(Player player)
     {
-        Debug.Log("Take Over " + player.name);
         if (Time.time < player.deathTime - dashDamage)
         {
             MarkWhoHitLast(player.GetComponent<PlayerInput>());
             player.TakeDamage(dashDamage);
             return;
         }
-        SwitchVisuals(player);
+        Debug.Log(name + " Takes Over " + player.name);
+        transform.position = player.transform.position;
+        SetRotation(player.lookDirection);
+        weaponHandler.SwitchWeapons(player.weaponHandler);
+        GetComponent<PlayerUI>().SwitchVisuals(player.GetComponent<PlayerUI>());
         EndDash();
         deathTime = Time.time + deathTime_MAX;
         player.Die();
 
     }
 
+    public Weapon GetWeapon()
+    {
+        return weaponHandler.weapon;
+    }
+
     public float GetCurrentHealth()
     {
         return timeRemaing / deathTime_MAX;
+    }
+
+    public void SetWeaponActive(bool enable)
+    {
+        if (enable)
+            weaponHandler.EnableVisuals();
+        else
+            weaponHandler.DisableVisuals();
     }
 
     public void SetAnimation()
@@ -231,7 +261,7 @@ public class Player : MonoBehaviour
             stateName = "Dash";
         }
 
-        anim.Play(stateName);
+        GetComponent<PlayerUI>().SetAnimations(stateName);
         weaponHandler.SetAnimations(stateName);
     }
 
@@ -250,7 +280,7 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Die");
+        Debug.Log(name + " dies");
         ScoreKeeper.ReigisterDeath(playerWhoHitMeLastIndex, PlayerManager.GetIndex(GetComponent<PlayerInput>()));
         playerWhoHitMeLastIndex = -1;
         MultipleTargetCamera.instance.targets.Remove(transform);
@@ -284,18 +314,4 @@ public class Player : MonoBehaviour
 
     }
 
-    public void SwitchVisuals(NPC_Controller npcc)
-    {
-        //sr.sprite = npcc.npc.image;
-        anim.runtimeAnimatorController = npcc.npc.aoc;
-        weaponHandler.SwitchWeapons(npcc.weaponHandler);
-
-    }
-
-    public void SwitchVisuals(Player player)
-    {
-        sr.sprite = player.sr.sprite;
-        anim.runtimeAnimatorController = new AnimatorOverrideController(player.anim.runtimeAnimatorController);
-        weaponHandler.SwitchWeapons(player.weaponHandler);
-    }
 }

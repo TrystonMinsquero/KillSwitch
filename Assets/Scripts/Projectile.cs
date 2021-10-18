@@ -3,37 +3,27 @@ using UnityEngine.InputSystem;
 
 public class Projectile : MonoBehaviour
 {
-
-    Player player;
-    Vector3 startPos;
-    float speed;
-    float range;
-    Vector2 direction;
-    int damage;
-
-    Rigidbody2D rb;
     public GameObject explosionPrefab;
     public float explosionRadius = 1.5f;
 
-    public void Set(Player player, Vector3 startPos, float speed, float range, Vector2 direction, int damage = 0)
+    private PlayerInput player;
+    private Weapon weapon;
+    private Vector2 direction;
+
+    private Rigidbody2D rb;
+
+    private Vector3 startPos;
+
+    public void Set(PlayerInput player, Weapon weapon, Vector2 direction)
     {
         this.player = player;
-        this.startPos = startPos;
-        this.speed = speed;
-        this.range = range;
+        this.weapon = weapon;
         this.direction = direction;
-        this.damage = damage;
-
 
         rb = GetComponent<Rigidbody2D>();
 
-        transform.position = startPos;
-
-        rb.velocity = direction * speed;
-        rb.velocity += player.GetVelocity();
-
-        //if (player.weapon.weapon.weaponType == WeaponType.GRENADE)
-        //    GetComponent<Collider2D>().isTrigger = false;
+        rb.velocity = direction * weapon.projectileSpeed;
+        startPos = transform.position;
     }
 
     private void Update()
@@ -41,181 +31,69 @@ public class Projectile : MonoBehaviour
 
         //Destroy if too far
         Vector2 distance = startPos - transform.position;
-        if (distance.magnitude >= range)
+        if (distance.magnitude >= weapon.range)
         {
-            if (player.weaponHandler.weapon.weaponType == WeaponType.RPG)
+            if (weapon.weaponType == WeaponType.RPG)
                 Explode(explosionRadius);
             else
                 Delete();
         }
-
-
-        rb.velocity = direction * speed;
+        
+        //Ensure velocity is constant
+        rb.velocity = direction * weapon.projectileSpeed;
     }
-
-    //public void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    direction *= -1;
-    //}
-
-
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        switch (player.weaponHandler.weapon.weaponType)
+        //Check assumptions
+        if (collision.CompareTag("Player") && collision.GetComponent<PlayerInput>() == player)
+            return;
+        else if (weapon.explodes)
+            Explode(explosionRadius);
+        else if (collision.CompareTag("Projectile"))
+            return;
+
+
+        switch (collision.tag)
         {
-            case WeaponType.STRAIGHT:
-                if (collision.gameObject.CompareTag("Projectile"))
-                    return;
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    if (collision.GetComponent<Player>() != player)
-                    {
-                        DamagePlayer(collision.GetComponent<Player>());
-                        Delete();
-                        
-                    }
-                }
-                else if (collision.gameObject.CompareTag("NPC"))
-                {
-                    collision.GetComponent<NPC_Controller>().Die();
-                    Delete();
-                    
-                }
-                else
-                    Delete();
+            case "Player":
+                DamagePlayer(collision.GetComponent<Player>());
                 break;
 
-
-
-
-            case WeaponType.SHOTGUN:
-                if (collision.gameObject.CompareTag("Projectile"))
-                    return;
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    if (collision.GetComponent<Player>() != player)
-                    {
-                        DamagePlayer(collision.GetComponent<Player>());
-                        PassThroughWall(); //WallBang
-                    }
-                    
-                }
-                else if (collision.gameObject.CompareTag("NPC"))
-                {
-                    collision.GetComponent<NPC_Controller>().Die();
-                    Delete();
-                    
-                }
-                else if (collision.gameObject.CompareTag("Wall"))
-                {
-                    PassThroughWall(); //WallBang
-                }
-                else
-                {
-                    Delete();
-                }
+            case "NPC":
+                collision.GetComponent<NPC_Controller>().Die();
                 break;
 
-
-
-            // Sniper
-            case WeaponType.LONG:
-                if (collision.gameObject.CompareTag("Projectile"))
-                    return;
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    if (collision.GetComponent<Player>() != player)
-                        DamagePlayer(collision.GetComponent<Player>());
-                    
-                }
-                else if (collision.gameObject.CompareTag("NPC"))
-                {
-                    collision.GetComponent<NPC_Controller>().Die();
-                    
-                }
-                else if (collision.gameObject.CompareTag("Wall"))
-                {
-                    PassThroughWall(); //WallBang
-                }
-                else
-                {
-                    Delete();
-                }
+            case "Wall":
                 break;
-
-            case WeaponType.RPG:
-                if (collision.gameObject.CompareTag("Projectile"))
-                    return;
-                if (collision.gameObject.CompareTag("Player"))
-                {
-                    if (collision.GetComponent<Player>() != player)
-                        Explode(explosionRadius);
-                    
-                }
-                else
-                    Explode(explosionRadius);
-                    
-                break;
-
-            // RPG
-            //case WeaponType.RPG:
-            //    if (collision.gameObject.CompareTag("Projectile"))
-            //        return;
-            //    if (collision.gameObject.CompareTag("Player"))
-            //    {
-            //        if (collision.GetComponent<Player>() != player)
-            //            collision.GetComponent<Player>().TakeDamage(damage);
-
-            //        AreaDamageEnemies(transform.position, 1.5f, damage);
-            //    }
-            //    else if (collision.gameObject.CompareTag("NPC"))
-            //    {
-            //        AreaDamageEnemies(transform.position, 1.5f, damage);
-
-            //        Destroy(collision.gameObject);
-            //        Delete();
-
-            //        GameObject expl = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
-            //        Destroy(expl, 3f);
-
-            //    }
-            //    else
-            //    {
-            //        AreaDamageEnemies(transform.position, 1.5f, damage);
-            //        GameObject expl = Instantiate(explosion, transform.position, Quaternion.identity) as GameObject;
-            //        Destroy(expl, 3f);
-            //        Delete();         
-            //    }
-
-            //    break;
-
-
-
-
         }
+
+        if (weapon.peircing)
+            PassThroughWall();
+        else
+            Delete();
+
     }
 
-    public void DamagePlayer(Player otherPlayer)
+    private void DamagePlayer(Player otherPlayer)
     {
-        otherPlayer.MarkWhoHitLast(player.GetComponent<PlayerInput>());
-        otherPlayer.TakeDamage(damage);
+        otherPlayer.MarkWhoHitLast(player);
+        otherPlayer.TakeDamage(weapon.damage);
     }
 
-    public void PassThroughWall()
+    private void PassThroughWall()
     {
 
-        damage /= 2;   // wallbang -> damage only half
+        weapon.damage /= 2;   // wallbang -> damage only half
         transform.localScale /= 2; //shrink by 2
     }
 
-    public void Delete()
+    private void Delete()
     {
-        player.weaponHandler.GetProjectiles().Remove(this);
         Destroy(this.gameObject);
     }
 
-    public void Explode(float explosionRadius)
+    private void Explode(float explosionRadius)
     {
         if (explosionPrefab != null)
         {
@@ -240,7 +118,7 @@ public class Projectile : MonoBehaviour
 
     
 
-    public void AreaDamageEnemies(Vector3 location, float radius, float damage)
+    private void AreaDamageEnemies(Vector3 location, float radius, float damage)
     {
         Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(location, radius);
 

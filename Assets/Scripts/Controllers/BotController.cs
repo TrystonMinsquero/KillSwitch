@@ -59,18 +59,18 @@ public class BotController : MonoBehaviour
         Func<bool> targetInDashRange() => () => TargetInRange(player.dashDistance);
         Func<bool> targetNotInDashRange() => () => !TargetInRange(player.dashDistance);
         Func<bool> playerFound() => () => HavePlayerTarget();
-        Func<bool> targetInWeaponRange() => () => HasWeapon() && TargetInRange(player.weaponHandler.weapon.range);
+        Func<bool> targetInWeaponRange() => () => HasWeapon() && TargetInRange(player.GetWeapon().range);
         Func<bool> playerInDashRange() => () => playerInRange(player.dashDistance);
 
         stateMachine.SetState(findNPC);
        
         
     }
-    private bool TimeLow() { return player.timeRemaing < lowTimeNum; }
+    private bool TimeLow() { return player.GetCurrentHealth() < lowTimeNum; }
     private bool HaveNPCTarget() { return target != null && target.tag == "NPC"; }
     private bool HavePlayerTarget() { return target != null && target.tag == "Player"; }
     private bool TargetInRange(float range) { return (target.position - transform.position).magnitude < range; }
-    private bool HasWeapon() { return player.weaponHandler != null; }
+    private bool HasWeapon() { return player.GetWeapon() != null; }
     private bool playerInRange(float range)
     {
         Collider2D[] collidersHit = Physics2D.OverlapCircleAll(transform.position, range);
@@ -102,10 +102,12 @@ public class BotController : MonoBehaviour
         stateMachine.Tick();
 
         //Look
+        /*Fix Later
         if (player.lookDirection.sqrMagnitude > .1f)
         {
             transform.rotation = Quaternion.Euler(0, 0, Mathf.Rad2Deg * Mathf.Atan2(player.lookDirection.y, player.lookDirection.x));
         }
+        */
 
         if(stateMachine.GetState().GetType() == typeof(FindTag))
             currentState = CurrentState.FIND_TARGET;

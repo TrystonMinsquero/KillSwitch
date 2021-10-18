@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponHandler : MonoBehaviour
@@ -33,6 +31,18 @@ public class WeaponHandler : MonoBehaviour
             weapon.Reset();
     }
 
+    public void EnableVisuals()
+    {
+        weaponSR.enabled = true;
+        flashSR.enabled = true;
+    }
+
+    public void DisableVisuals()
+    {
+        weaponSR.enabled = false;
+        flashSR.enabled = false;
+    }
+
     public void SwitchVisuals()
     {
         if (weapon == null)
@@ -60,11 +70,11 @@ public class WeaponHandler : MonoBehaviour
     }
     
 
-    public void Shoot(Player player)
+    public void Shoot(UnityEngine.InputSystem.PlayerInput player, Vector2 direction)
     {
         if(weapon != null)
         {
-            if(weapon.Shoot(player))
+            if(weapon.Shoot(player, direction))
                 flashAnim.Play("Flash");
         }
         //muzzle flash start
@@ -75,11 +85,6 @@ public class WeaponHandler : MonoBehaviour
     {
         if(weapon!=null)
             weaponAnim.Play(stateName);
-    }
-
-    public List<Projectile> GetProjectiles()
-    {
-        return weapon.projectiles;
     }
 
 

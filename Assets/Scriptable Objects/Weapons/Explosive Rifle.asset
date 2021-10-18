@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7fc54f6dcc49dc45b71ffffb1971cdc, type: 3}
-  m_Name: RPG
+  m_Name: Explosive Rifle
   m_EditorClassIdentifier: 
-  color: {r: 0, g: 0.4056604, b: 0.006028756, a: 1}
-  weaponAoc: {fileID: 22100000, guid: 420e9710fca9ead47931f42c91696663, type: 2}
-  flashAoc: {fileID: 22100000, guid: dddfb075f4d1fcc4d8464127ae336903, type: 2}
+  color: {r: 0.5660378, g: 0.03470988, b: 0.040020492, a: 1}
+  weaponAoc: {fileID: 22100000, guid: e244091cd16051a40986a35bcf7328d1, type: 2}
+  flashAoc: {fileID: 22100000, guid: e6c299dbff60a0c4ab36dba9d7c71a99, type: 2}
   projectilePrefab: {fileID: 9037812320112203550, guid: d73cdcfd473b8b64d9feb1a21fe114cc, type: 3}
-  weaponType: 2
+  weaponType: 0
   peircing: 0
   explodes: 1
-  fireDelay: 3.5
+  fireDelay: 0.75
   projectileSpeed: 10
-  range: 10
-  damage: 8
+  range: 12
+  damage: 7

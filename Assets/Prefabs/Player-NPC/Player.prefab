@@ -598,14 +598,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon
       objectReference: {fileID: 0}
-    - target: {fileID: 5514447345603597792, guid: fad224aa9035a4945a33fc0257af0e4b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.007
-      objectReference: {fileID: 0}
-    - target: {fileID: 5514447345603597792, guid: fad224aa9035a4945a33fc0257af0e4b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.007
-      objectReference: {fileID: 0}
     - target: {fileID: 7620657564804111571, guid: fad224aa9035a4945a33fc0257af0e4b, type: 3}
       propertyPath: m_RootOrder
       value: 0

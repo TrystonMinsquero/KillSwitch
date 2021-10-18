@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8404022950937042716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8404022950937042717}
+  - component: {fileID: 8404022950937042690}
+  m_Layer: 0
+  m_Name: NPC Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8404022950937042717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8404022950937042716}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8404022950937042690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8404022950937042716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c59f7b930f89349a88ad6f50dfe674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolPathPopulationsDisplay: []
+  NPCPrefab: {fileID: 4862974284002695767, guid: 7049635e5dc50394a80b14445a04519b, type: 3}
+  patrolPathsObj: {fileID: 0}
+  NPCTemplates:
+  - {fileID: 11400000, guid: 8a430033fb838b1479d8e4718f7d361d, type: 2}
+  - {fileID: 11400000, guid: 0c2a329c520aab245999e245727265d9, type: 2}
+  - {fileID: 11400000, guid: 3d16ae53f4217b347bf98de496e04013, type: 2}
+  - {fileID: 11400000, guid: af5c607d9ddae3b49abed4ec5c0f9911, type: 2}
+  - {fileID: 11400000, guid: 3cfdb3b0a649b0e4f9fbabf405ddcd3b, type: 2}
+  - {fileID: 11400000, guid: 2a4f022cba23fb044b81644e6bc3e4bb, type: 2}
+  - {fileID: 11400000, guid: efc9c9d3fb5dd7b4986c6360dbbfe470, type: 2}
+  - {fileID: 11400000, guid: 081c4442c947b004bbc5650366a2c4f6, type: 2}
+  - {fileID: 11400000, guid: be10e94a0959cf34094fb936f2245257, type: 2}
+  - {fileID: 11400000, guid: 30b3825a74083114bbfc762a8afff1ef, type: 2}
+  - {fileID: 11400000, guid: 25a00d30c7bf2b04d9f1b60b5f89cdeb, type: 2}
+  - {fileID: 11400000, guid: 3d78406458b686b448df87b7f1775788, type: 2}
+  - {fileID: 11400000, guid: 1790f12e7eaa39b4db5c1f652d77d72b, type: 2}
+  - {fileID: 11400000, guid: a946f6aee91d0c04ab290e406cc5617b, type: 2}
+  - {fileID: 11400000, guid: 7e88545ceac7b6441b20678680fb1423, type: 2}
+  - {fileID: 11400000, guid: c19e89800d9b2a34b90d4e60f7541304, type: 2}
+  WeaponTemplates:
+  - {fileID: 11400000, guid: b6a795736c847ff448c231b5b4d6518f, type: 2}
+  - {fileID: 11400000, guid: d1d7ce85ba6e97b46bfe63863faa299e, type: 2}
+  - {fileID: 11400000, guid: 417a6d3d60beca74bbe3e46c8aaa13ed, type: 2}
+  - {fileID: 11400000, guid: 648f41699c38537449d0133ed3f3fdab, type: 2}
+  - {fileID: 11400000, guid: 33dd8a86da6422d42bb5b00670eea9cd, type: 2}
+  - {fileID: 11400000, guid: 41362a15c9bf356459733f2cebaf5bb5, type: 2}
+  - {fileID: 11400000, guid: f5f580332907c3244b1b42c8923418db, type: 2}
+  - {fileID: 11400000, guid: 9270717ea88bedc428cd5dfd2522d6e1, type: 2}
+  - {fileID: 11400000, guid: b4366c64fd36f424e8fe0dd77460d082, type: 2}

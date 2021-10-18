@@ -17,8 +17,9 @@ MonoBehaviour:
   flashAoc: {fileID: 22100000, guid: dddfb075f4d1fcc4d8464127ae336903, type: 2}
   projectilePrefab: {fileID: 9037812320112203550, guid: d73cdcfd473b8b64d9feb1a21fe114cc, type: 3}
   weaponType: 2
+  peircing: 0
+  explodes: 1
   fireDelay: 4
   projectileSpeed: 20
   range: 20
   damage: 5
-  projectiles: []

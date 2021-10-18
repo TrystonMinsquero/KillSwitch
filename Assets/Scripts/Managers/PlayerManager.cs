@@ -5,33 +5,30 @@ public class PlayerManager : MonoBehaviour
 { 
     public static PlayerManager instance;
     public static PlayerInputManager playerInputManager;
+
     public static bool inLobby;
     public static bool startedInLobby;
-
+    
     public static PlayerInput[] players = new PlayerInput[8];
     public static int playerCount;
 
-    public PlayerInput[] _players = new PlayerInput[8];
+    public PlayerInput[] playersDisplay;
 
 
 
     private void Awake()
     {
         if (instance != null)
-        {
             Destroy(this.gameObject);
-        }
         else
             instance = this;
-
-
+        playerInputManager = GetComponent<PlayerInputManager>();
         DontDestroyOnLoad(this);
     }
 
-    private void Start()
+    private void Update()
     {
-        playerInputManager = GetComponent<PlayerInputManager>();
-        //Debug.Log("inLobby = " + inLobby);
+        playersDisplay = players;
     }
 
     public static int GetIndex(PlayerInput _player)
@@ -42,14 +39,6 @@ public class PlayerManager : MonoBehaviour
             if (players[i] == _player)
                 return i;
         return -1;
-    }
-
-    private void Update()
-    {
-        _players = players;
-        //Debug.Log("inLobby: " + inLobby);
-        //Debug.Log("debug join: " + DebugController.debugJoin);
-
     }
 
     public static bool Contains(PlayerInput _player)
@@ -120,30 +109,37 @@ public class PlayerManager : MonoBehaviour
         
         if (Contains(playerInput))
             return;
-        Debug.Log("Trying to Join Player: " + playerInput);
-        if (DebugController.debugJoin)
+        if(NextPlayerSlot() < 0)
         {
-            Debug.Log("Player Joined: " + (NextPlayerSlot() + 1));
-            playerInput.name = "Player " + (NextPlayerSlot() + 1);
-            playerInput.GetComponent<PlayerUI>().Disable();
-            if (!inLobby)
-                LevelManager.QueuePlayerToSpawn(playerInput.GetComponent<Player>());
-            players[NextPlayerSlot()] = playerInput;
-            playerCount++;
+            Destroy(playerInput.gameObject);
+            return;
         }
+
+        if(DebugController.debugJoin )
+            JoinPlayer(playerInput, !inLobby);
         else if (inLobby)
         {
-            if (playerCount < 0 || playerCount >= players.Length || !LobbyManager.canJoin)
+            if(playerCount < players.Length && LobbyManager.canJoin)
+                JoinPlayer(playerInput);
+            else
             {
                 Destroy(playerInput.gameObject);
                 return;
             }
-            playerInput.GetComponent<PlayerUI>().Disable();
-            Debug.Log("Player Joined: Player " + (NextPlayerSlot() + 1));
-            playerInput.name = "Player " + (NextPlayerSlot() + 1);
-            players[NextPlayerSlot()] = playerInput;
-            playerCount++;
         }
+
+    }
+
+    private static void JoinPlayer(PlayerInput playerInput, bool inGame = false)
+    {
+        playerInput.GetComponent<PlayerUI>().Disable();
+        if(inGame)
+            LevelManager.QueuePlayerToSpawn(playerInput.GetComponent<Player>());
+        Debug.Log("Player Joined: Player " + (NextPlayerSlot() + 1));
+        playerInput.name = "Player " + (NextPlayerSlot() + 1);
+        players[NextPlayerSlot()] = playerInput;
+        playerCount++;
+        playerInput.transform.parent = instance.transform;
     }
 
     public static void KillAll()

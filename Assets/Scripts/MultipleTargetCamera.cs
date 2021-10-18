@@ -39,6 +39,17 @@ public class MultipleTargetCamera : MonoBehaviour
         Zoom();        
     }
 
+    public static void AddTarget(Transform target)
+    {
+        if(instance)
+            instance.targets.Add(target);
+    }
+    public static void RemoveTarget(Transform target)
+    {
+        if(instance)
+            instance.targets.Remove(target);
+    }
+
     void Move()
     {
         Vector3 newPosition = GetCenterPoint() + offset;

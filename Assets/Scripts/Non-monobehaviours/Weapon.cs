@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "new Weapon")]
@@ -17,6 +14,8 @@ public class Weapon : ScriptableObject
     [Header("Projectile Details")]
     public GameObject projectilePrefab;
     public WeaponType weaponType;
+    public bool peircing = false;
+    public bool explodes = false;
 
     [Header("Stats")]
     public float fireDelay;
@@ -24,70 +23,53 @@ public class Weapon : ScriptableObject
     public float range;
     public int damage;
 
-    [HideInInspector]
-    public List<Projectile> projectiles;
-
     private float nextFireTime;
 
 
-    public bool Shoot(Player player)
+    public bool Shoot(UnityEngine.InputSystem.PlayerInput player, Vector2 direction)
     {
         if (Time.time < nextFireTime)
             return false;
         nextFireTime = Time.time + fireDelay;
-        Projectile pro = GameObject.Instantiate(projectilePrefab).GetComponent<Projectile>();
 
+        Vector3 shootPosition = player.transform.position;
 
         switch (weaponType)
         {
             case WeaponType.STRAIGHT:
-                pro.Set(player, player.transform.position, projectileSpeed, range, player.lookDirection.normalized, damage);
-                projectiles.Add(pro);
-
+                CreateProjectile(shootPosition).Set(player, this, direction);
                 SFXManager.Play("Gun");
-
                 break;
-
 
             case WeaponType.SHOTGUN:
 
-                float angle = Mathf.Atan2(player.lookDirection.y, player.lookDirection.x);
+                float angle = Mathf.Atan2(direction.y, direction.x);
                 // angle from player to x-axis
 
-                Vector2 shotgun = new Vector2(player.lookDirection.x - (0.05f) * Mathf.Sin(angle),
-                    player.lookDirection.y + (0.05f) * Mathf.Cos(angle));
-                Vector2 shotgun2 = new Vector2(player.lookDirection.x + (0.05f) * Mathf.Sin(angle),
-                    player.lookDirection.y - (0.05f) * Mathf.Cos(angle));
+                Vector2 rightBulletDirection = new Vector2(direction.x - (0.05f) * Mathf.Sin(angle),
+                    direction.y + (0.05f) * Mathf.Cos(angle));
+                Vector2 leftBulletDirection = new Vector2(direction.x + (0.05f) * Mathf.Sin(angle),
+                    direction.y - (0.05f) * Mathf.Cos(angle));
                 // vectors for direction of each shotgun bullet/projectile
 
-                Projectile pro2 = GameObject.Instantiate(projectilePrefab).GetComponent<Projectile>();
-                // second bullet created
 
-                Projectile pro3 = GameObject.Instantiate(projectilePrefab).GetComponent<Projectile>();
-
-                pro.Set(player, player.transform.position, projectileSpeed, range, shotgun, damage);
-                pro2.Set(player, player.transform.position, projectileSpeed, range, shotgun2, damage);
-                pro3.Set(player, player.transform.position, projectileSpeed, range, player.lookDirection.normalized, damage);
-
-                projectiles.Add(pro);
-                projectiles.Add(pro2);
-                projectiles.Add(pro3);
+                CreateProjectile(shootPosition).Set(player, this, rightBulletDirection);
+                CreateProjectile(shootPosition).Set(player, this, direction);
+                CreateProjectile(shootPosition).Set(player, this, leftBulletDirection);
 
                 SFXManager.Play("Shotgun");
 
                 break;
 
             case WeaponType.RPG:
-                pro.Set(player, player.transform.position, projectileSpeed, range, player.lookDirection.normalized, damage);
-                projectiles.Add(pro);
+
+                CreateProjectile(shootPosition).Set(player, this, direction);
 
                 SFXManager.Play("Gun");
                 break;
 
             case WeaponType.LONG:
-                pro.Set(player, player.transform.position, projectileSpeed, range, player.lookDirection.normalized, damage);
-                projectiles.Add(pro);
-
+                CreateProjectile(shootPosition).Set(player, this, direction);
                 SFXManager.Play("Sniper");
                 break;
         }
@@ -100,6 +82,10 @@ public class Weapon : ScriptableObject
         nextFireTime = 0;
     }
 
+    private Projectile CreateProjectile(Vector3 position)
+    {
+        return Instantiate(projectilePrefab, position, Quaternion.identity).GetComponent<Projectile>();
+    }
 
 }
 

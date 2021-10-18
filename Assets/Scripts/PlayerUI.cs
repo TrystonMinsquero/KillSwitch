@@ -10,14 +10,23 @@ public class PlayerUI : MonoBehaviour
     public GameObject healthBarPrefab;
     public Transform healthBarStart;
     public HealthBar healthBar;
+    private SpriteRenderer sr;
+    private Animator anim;
+    private AnimatorOverrideController aoc;
     bool debugging;
 
     private void Awake()
     {
         controls = new Controls();
-        playerInput = GetComponent<PlayerInput>();
         DontDestroyOnLoad(this);
 
+    }
+
+    public void AssignComponents()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     public void InstantiateHealthBar()
@@ -47,6 +56,7 @@ public class PlayerUI : MonoBehaviour
 
     public void Enable()
     {
+        MultipleTargetCamera.AddTarget(transform);
         foreach (Behaviour component in behaviours)
             component.enabled = true;
         if (healthBar == null)
@@ -54,24 +64,43 @@ public class PlayerUI : MonoBehaviour
         healthBar.Enable();
         Player player = GetComponent<Player>();
         player.AssignComponents();
-        player.sr.enabled = true;
-        player.weaponHandler.weaponSR.enabled = true;
-        player.weaponHandler.flashSR.enabled = true;
+        player.SetWeaponActive(true);
+        sr.enabled = true;
         GetComponent<PlayerController>().EnableControls(true);
     }
     public void Disable()
     {
+        MultipleTargetCamera.RemoveTarget(transform);
         Player player = GetComponent<Player>();
         player.AssignComponents();
-        player.sr.enabled = false;
-        player.weaponHandler.weaponSR.enabled = false;
-        player.weaponHandler.flashSR.enabled = false;
+        player.SetWeaponActive(false);
+        sr.enabled = false;
         GetComponent<PlayerController>().EnableControls(false);
         foreach (Behaviour component in behaviours)
             component.enabled = false;
         if (healthBar == null)
             InstantiateHealthBar();
         healthBar.Disable();
+    }
+
+    public void SetAnimations(string stateName)
+    {
+        anim.Play(stateName);
+    }
+
+    public void SwitchVisuals(NPC_Controller npcc)
+    {
+        //sr.sprite = npcc.npc.image;
+        aoc = npcc.npc.aoc;
+        anim.runtimeAnimatorController = aoc;
+
+    }
+
+    public void SwitchVisuals(PlayerUI player)
+    {
+        sr.sprite = player.sr.sprite;
+        aoc = player.aoc;
+        anim.runtimeAnimatorController = aoc;
     }
 
     public void Debug(bool debugging)

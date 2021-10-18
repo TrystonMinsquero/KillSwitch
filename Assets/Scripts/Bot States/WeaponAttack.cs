@@ -23,7 +23,8 @@ public class WeaponAttack : IState
 
     public void Tick()
     {
-        player.lookDirection = (bot.target.position - player.transform.position).normalized;
+        //Fix later
+        //player.lookDirection = (bot.target.position - player.transform.position).normalized;
         player.Shoot();
     }
 }
