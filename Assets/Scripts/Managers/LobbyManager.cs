@@ -4,9 +4,11 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
+    //static variables
     public static LobbyManager instance;
+    public static bool canJoin; //true if in lobby menu (not controls, etc.)
 
-    public static bool canJoin;
+    [Header("UI Draggables")]
     public Canvas lobby;
     public Canvas howToPlay;
     public Button startButton;
@@ -20,6 +22,8 @@ public class LobbyManager : MonoBehaviour
             instance = this;
         else
             Destroy(this.gameObject);
+
+
         UpdateJoinBoxes();
         PlayerManager.OnSceneChange(true);
         PlayerManager.startedInLobby = true;

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerInputManager))]
 public class PlayerManager : MonoBehaviour
 { 
     public static PlayerManager instance;
@@ -12,9 +13,8 @@ public class PlayerManager : MonoBehaviour
     public static PlayerInput[] players = new PlayerInput[8];
     public static int playerCount;
 
+    //used to view players in the editor
     public PlayerInput[] playersDisplay;
-
-
 
     private void Awake()
     {
@@ -22,6 +22,7 @@ public class PlayerManager : MonoBehaviour
             Destroy(this.gameObject);
         else
             instance = this;
+
         playerInputManager = GetComponent<PlayerInputManager>();
         DontDestroyOnLoad(this);
     }
@@ -31,6 +32,38 @@ public class PlayerManager : MonoBehaviour
         playersDisplay = players;
     }
 
+    //Event that gets called when input is detected
+    public void OnPlayerJoined(PlayerInput playerInput)
+    {
+        AddPlayer(playerInput);
+    }
+
+    //Event that gets called when player leaves
+    public void OnPlayerLeft(PlayerInput playerInput)
+    {
+        Remove(playerInput);
+    }
+
+    //kills all players (for debugging)
+    public static void KillAll()
+    {
+        if (!inLobby)
+            foreach (PlayerInput player in players)
+                if (player != null)
+                    player.GetComponent<Player>().Die();
+    }
+
+    //Sets "EnableJoining" on the manager to true, allowing new inputs to join
+    public static void SetJoinable(bool enabled)
+    {
+        DebugController.debugJoin = enabled;
+        if (enabled)
+            PlayerInputManager.instance.EnableJoining();
+        else
+            PlayerInputManager.instance.DisableJoining();
+    }
+
+    //Gets the index of player in the player array, returns -1 if not there
     public static int GetIndex(PlayerInput _player)
     {
         if (playerCount <= 0 || _player == null)
@@ -41,6 +74,7 @@ public class PlayerManager : MonoBehaviour
         return -1;
     }
 
+    //returns true if player is already connected to player manager, false otherwise
     public static bool Contains(PlayerInput _player)
     {
         if (playerCount <= 0)
@@ -51,6 +85,7 @@ public class PlayerManager : MonoBehaviour
         return false;
     }
 
+    //Sets up the PlayerManager depending on either in game or in lobby
     public static void OnSceneChange(bool _inLobby)
     {
         inLobby = _inLobby;
@@ -72,25 +107,8 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public static void SetJoinable(bool enabled)
-    {
-        DebugController.debugJoin = enabled;
-        if (enabled)
-            PlayerInputManager.instance.EnableJoining();
-        else
-            PlayerInputManager.instance.DisableJoining();
-    }
-
-    public void OnPlayerJoined(PlayerInput playerInput)
-    {
-        AddPlayer(playerInput);
-    }
-
-    public void OnPlayerLeft(PlayerInput playerInput)
-    {
-        Remove(playerInput);
-    }
-
+    //returns the next empty slot index in the array (so can leave and rejoin),
+    //returns -1 if no slots are available
     public static int NextPlayerSlot()
     {
         for (int i = 0; i < players.Length; i++)
@@ -99,23 +117,20 @@ public class PlayerManager : MonoBehaviour
         return -1;
     }
 
-    public static void Join(GameObject newPlayer)
-    {
-        instance.OnPlayerJoined(newPlayer.GetComponent<PlayerInput>());
-    }
-
-    public static void AddPlayer(PlayerInput playerInput)
+    //Will check coniditons to add a player and add them if conditions hold
+    private static void AddPlayer(PlayerInput playerInput)
     {
         
         if (Contains(playerInput))
             return;
+
         if(NextPlayerSlot() < 0)
         {
             Destroy(playerInput.gameObject);
             return;
         }
 
-        if(DebugController.debugJoin )
+        if(DebugController.debugJoin)
             JoinPlayer(playerInput, !inLobby);
         else if (inLobby)
         {
@@ -129,7 +144,8 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
-
+    
+    //Properly adds a player to the game
     private static void JoinPlayer(PlayerInput playerInput, bool inGame = false)
     {
         playerInput.GetComponent<PlayerUI>().Disable();
@@ -142,15 +158,8 @@ public class PlayerManager : MonoBehaviour
         playerInput.transform.parent = instance.transform;
     }
 
-    public static void KillAll()
-    {
-        if (!inLobby)
-            foreach (PlayerInput player in players)
-                if (player != null)
-                    player.GetComponent<Player>().Die();
-    }
-
-    public static void Remove(PlayerInput playerInput)
+    //Properly removes players from the game
+    private static void Remove(PlayerInput playerInput)
     {
             
         if (inLobby && LobbyManager.canJoin)

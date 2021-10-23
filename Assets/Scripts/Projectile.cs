@@ -3,16 +3,19 @@ using UnityEngine.InputSystem;
 
 public class Projectile : MonoBehaviour
 {
+    [Header("Explosion")]
     public GameObject explosionPrefab;
     public float explosionRadius = 1.5f;
 
+    //references
     private PlayerInput player;
-    private Weapon weapon;
-    private Vector2 direction;
-
     private Rigidbody2D rb;
 
+    //bullet info
+    private Weapon weapon;
+    private Vector2 direction;
     private Vector3 startPos;
+
 
     public void Set(PlayerInput player, Weapon weapon, Vector2 direction)
     {

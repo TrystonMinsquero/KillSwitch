@@ -1,18 +1,26 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+//Manages the input detection and visuals for a player
+[RequireComponent(typeof(Animator), typeof(PlayerInput), typeof(SpriteRenderer))]
 public class PlayerUI : MonoBehaviour
 {
     Controls controls;
     [HideInInspector]
     public PlayerInput playerInput;
-    public Behaviour[] behaviours;
-    public GameObject healthBarPrefab;
-    public Transform healthBarStart;
-    public HealthBar healthBar;
+
+    public Behaviour[] behaviours; //behaviors that get disabled/reenabled onDeath
+
+    [Header("Health Bar")]  //instantiate at runtime in world space
+    public GameObject healthBarPrefab; 
+    public Transform healthBarStart; //position relative to player
+    private HealthBar healthBar; //current instance of healthBar
+
+    //Visual Componenents
     private SpriteRenderer sr;
     private Animator anim;
     private AnimatorOverrideController aoc;
+
     bool debugging;
 
     private void Awake()
@@ -54,6 +62,7 @@ public class PlayerUI : MonoBehaviour
             InstantiateHealthBar();
     }
 
+    //enables the player for gameplay
     public void Enable()
     {
         MultipleTargetCamera.AddTarget(transform);
@@ -66,8 +75,10 @@ public class PlayerUI : MonoBehaviour
         player.AssignComponents();
         player.SetWeaponActive(true);
         sr.enabled = true;
-        GetComponent<PlayerController>().EnableControls(true);
+        GetComponent<PlayerController>().ControlsActive(true);
     }
+
+    //disables the player for UI/Not Exisiting in game
     public void Disable()
     {
         MultipleTargetCamera.RemoveTarget(transform);
@@ -75,7 +86,7 @@ public class PlayerUI : MonoBehaviour
         player.AssignComponents();
         player.SetWeaponActive(false);
         sr.enabled = false;
-        GetComponent<PlayerController>().EnableControls(false);
+        GetComponent<PlayerController>().ControlsActive(false);
         foreach (Behaviour component in behaviours)
             component.enabled = false;
         if (healthBar == null)

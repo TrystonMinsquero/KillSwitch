@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -0.00035592934, y: -132.02242}
+  m_AnchoredPosition: {x: -0.00040000028, y: -159.72339}
   m_SizeDelta: {x: 774, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &6205765970535319588
@@ -464,6 +464,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0967dccac7bd2247a2ab49ce2bdbeca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _commandList:
+  - id: help
+    description: show the list of available commands
+    format: help
+  - id: kill_all_npcs
+    description: Kill all npcs from level
+    format: kill_all_npcs
+  - id: kill_all_players
+    description: Kill all players from level
+    format: kill_all_players
+  - id: set_game_time
+    description: Set the time remaing on the game
+    format: set_game_time <time_in_seconds>
+  - id: allow_join
+    description: allow players to join mid game
+    format: allow_join <enabled>
+  - id: godmode
+    description: disable death for all players
+    format: godmode <enabled>
   _console: {fileID: 5918200304562004632}
 --- !u!1 &5474566972075072128
 GameObject:

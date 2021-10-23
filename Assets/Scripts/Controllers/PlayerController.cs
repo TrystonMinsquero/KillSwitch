@@ -1,19 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(Player), typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector]
-    public Player player;
+    //necessary compononent references
+    private Player player;
     private PlayerInput playerInput;
-    [HideInInspector]
-    Controls controls;
+    private Controls controls;
+
+    //input trackers
     Vector2 movementInput;
     Vector2 lookInput;
     bool dashInput;
     bool shootInput;
     bool spawnInput;
+
     bool debugging;
+
+
+    public void Debug(bool debugging)
+    {
+        this.debugging = debugging;
+    }
+
+    public void ControlsActive(bool enabled)
+    {
+        if (enabled)
+        {
+            GetComponent<PlayerInput>().actions.FindActionMap("UI").Disable();
+            GetComponent<PlayerInput>().actions.FindActionMap("Gameplay").Enable();
+        }
+        else
+        {
+            GetComponent<PlayerInput>().actions.FindActionMap("Gameplay").Disable();
+            GetComponent<PlayerInput>().actions.FindActionMap("UI").Enable();
+        }
+    }
+
+    public void AssignComponents()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        player = GetComponent<Player>();
+    }
 
     private void Awake()
     {
@@ -21,12 +51,6 @@ public class PlayerController : MonoBehaviour
         AssignComponents();
 
     }
-    public void AssignComponents()
-    {
-        playerInput = GetComponent<PlayerInput>();
-        player = GetComponent<Player>();
-    }
-    
 
     private void FixedUpdate()
     {
@@ -54,26 +78,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void Debug(bool debugging)
-    {
-        this.debugging = debugging;
-    }
 
-    public void EnableControls(bool enabled)
-    {
-        if (enabled)
-        {
-            GetComponent<PlayerInput>().actions.FindActionMap("UI").Disable();
-            GetComponent<PlayerInput>().actions.FindActionMap("Gameplay").Enable();            
-        }
-        else
-        {
-            GetComponent<PlayerInput>().actions.FindActionMap("Gameplay").Disable();
-            GetComponent<PlayerInput>().actions.FindActionMap("UI").Enable();
-        }
-    }
+    //UI Button Actions
 
-    //UI Actions
     public void Join()
     {
         if (debugging)
@@ -92,10 +99,10 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnJoin(InputAction.CallbackContext ctx) => Join();
+
     public void OnLeave(InputAction.CallbackContext ctx) => Leave();
 
-
-    //Get Inputs
+    //Gamplay Button Actions
     
     public void OnMove(InputAction.CallbackContext ctx) => movementInput = ctx.ReadValue<Vector2>();
 

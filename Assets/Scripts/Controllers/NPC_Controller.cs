@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Pathfinding;
 
+[RequireComponent(typeof(Patrol), typeof(Animator))]
 public class NPC_Controller : MonoBehaviour
 {
     public NPC npc;

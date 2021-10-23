@@ -5,8 +5,11 @@ using UnityEngine.InputSystem;
 
 public class JoinBox : MonoBehaviour
 {
+    [Header("Data")]
     public int slot;
     public bool hasPlayer;
+
+    [Header("UI Draggables")]
     public Canvas joined;
     public Canvas empty;
 
@@ -17,6 +20,7 @@ public class JoinBox : MonoBehaviour
         hasPlayer = true;
         
     }
+
     public void RemovePlayer(PlayerInput player)
     {
         joined.enabled = false;

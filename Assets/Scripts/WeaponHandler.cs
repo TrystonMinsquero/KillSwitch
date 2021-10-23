@@ -4,6 +4,7 @@ public class WeaponHandler : MonoBehaviour
 {
     public Weapon weapon;
 
+    [Header("Visual Componenets")]
     public SpriteRenderer weaponSR;
     public SpriteRenderer flashSR;
     public Animator weaponAnim;
@@ -24,6 +25,7 @@ public class WeaponHandler : MonoBehaviour
     }
 
 
+    //Sets up the weapon visually and functionally
     public void Set()
     {
         SwitchVisuals();
@@ -68,7 +70,6 @@ public class WeaponHandler : MonoBehaviour
         weaponAnim.runtimeAnimatorController = newWeapon.weaponAoc;
         flashAnim.runtimeAnimatorController = newWeapon.flashAoc;
     }
-    
 
     public void Shoot(UnityEngine.InputSystem.PlayerInput player, Vector2 direction)
     {
@@ -81,6 +82,7 @@ public class WeaponHandler : MonoBehaviour
 
     }
 
+    //plays the animation of the stateName
     public void SetAnimations(string stateName)
     {
         if(weapon!=null)

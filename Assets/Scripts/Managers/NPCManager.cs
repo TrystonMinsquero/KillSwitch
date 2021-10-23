@@ -112,7 +112,7 @@ public class NPCManager : MonoBehaviour
     }
 
     //Kills all NPCs
-    public static void KillALL()
+    public static void KillAll()
     {
         for (int i = instance.NPC_List.Count - 1; i >= 0; i--)
             KillNPC(instance.NPC_List[i]);

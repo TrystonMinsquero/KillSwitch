@@ -1,8 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+
+//Base class for debug commands
+[Serializable]
 public class DebugCommandBase
 {
     public string id;
@@ -17,6 +18,8 @@ public class DebugCommandBase
     }
 }
 
+//Debug command with no arguments
+[System.Serializable]
 public class DebugCommand : DebugCommandBase
 {
     private Action command;
@@ -33,6 +36,8 @@ public class DebugCommand : DebugCommandBase
     }
 }
 
+//Debug command with one argument
+[Serializable]
 public class DebugCommand<T> : DebugCommandBase
 {
     private Action<T> command;

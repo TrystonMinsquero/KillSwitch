@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(PlayerUI), typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
     [Header("Attributes")]
