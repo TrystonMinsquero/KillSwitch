@@ -59,11 +59,6 @@ MonoBehaviour:
   dashChargeTime: 0.73
   dashSpeed: 30
   deathEffect: {fileID: 3256664758702202174, guid: 58f840fe5c46a7c4883de45ee327f539, type: 3}
-  sr: {fileID: 2377044252534902315}
-  weaponHandler: {fileID: 0}
-  lookDirection: {x: 0, y: 0}
-  timeRemaing: 0
-  movementSpeed: 8
 --- !u!114 &2377044252534902309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +71,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3be7c9a7a66e80745bff1c32a57dfa6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!114 &983866352550524076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +91,6 @@ MonoBehaviour:
   - {fileID: 6204781513941874212}
   healthBarPrefab: {fileID: 3032800716150909103, guid: 8ad0dad2ba7b7954fb82659d865e1d2e, type: 3}
   healthBarStart: {fileID: 4830636251457973470}
-  healthBar: {fileID: 0}
 --- !u!114 &2377044252534902308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,7 +437,7 @@ Animator:
   m_GameObject: {fileID: 2377044252534902310}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 855bdf081f74ece418486fabaf63830d, type: 2}
+  m_Controller: {fileID: 22100000, guid: 3057943a3f698ee49a3ffe4215c4266f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

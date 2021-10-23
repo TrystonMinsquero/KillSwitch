@@ -26,7 +26,8 @@ public class HealthBar : MonoBehaviour
 
     public void Disable()
     {
-        GetComponentInParent<Transform>().gameObject.SetActive(false);
+        if (GetComponentInParent<Transform>() != null)
+            gameObject.SetActive(false);
     }
     public void Enable()
     {

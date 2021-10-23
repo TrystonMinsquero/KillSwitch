@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
         dashing = true;
         Vector3 startPos = transform.position;
         //Debug.Log(lookDirection);
-        rb.velocity = lookDirection * dashSpeed; //initial velocity added
+        rb.velocity = lookDirection.normalized * dashSpeed; //initial velocity added
         float maxDashTime = (dashDistance / rb.velocity.magnitude) + .3f; //Estimated
         float timeStarted = Time.time;
         while((transform.position - startPos).magnitude < dashDistance && Time.time - timeStarted < maxDashTime)
