@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
                 return randomIndex;
             }
             else
-                indexes.RemoveAt(randomIndex);
+                indexes.Remove(randomIndex);
         }
         return -1;
     }
