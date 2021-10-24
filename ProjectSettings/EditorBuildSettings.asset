@@ -5,18 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Menus.unity
-    guid: b72a487d7a1547b41bfb7d550d0000df
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 3fe2c816177cb064799b855a1b3fffa9
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 0
-    path: Assets/Scenes/Linus' Playground.unity
-    guid: 71e369c06148e1c48b30891c6f6390fa
   - enabled: 0
     path: Assets/Scenes/Office Space.unity
     guid: 616100b14ebe2ca4e91b747afdb12bda

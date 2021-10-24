@@ -10,7 +10,7 @@ public class Leaderboard : MonoBehaviour
 
     public void ReturnToLobby()
     {
-        SceneManager.LoadScene("Lobby");
+        GameManager.PlayNewLevel();
     }
 
     public void Display()

@@ -5,7 +5,7 @@ public class Projectile : MonoBehaviour
 {
     [Header("Explosion")]
     public GameObject explosionPrefab;
-    public float explosionRadius = 1.5f;
+    public Optional<float> explosionRadius = new Optional<float>(1.5f);
 
     //references
     private PlayerInput player;
@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
         if (distance.magnitude >= weapon.range)
         {
             if (weapon.weaponType == WeaponType.RPG)
-                Explode(explosionRadius);
+                Explode(explosionRadius.Value);
             else
                 Delete();
         }
@@ -52,7 +52,7 @@ public class Projectile : MonoBehaviour
         if (collision.CompareTag("Player") && collision.GetComponent<PlayerInput>() == player)
             return;
         else if (weapon.explodes)
-            Explode(explosionRadius);
+            Explode(explosionRadius.Value);
         else if (collision.CompareTag("Projectile"))
             return;
 

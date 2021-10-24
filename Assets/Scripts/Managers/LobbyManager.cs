@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
@@ -68,7 +67,7 @@ public class LobbyManager : MonoBehaviour
     public void StartGame()
     {
         if(PlayerManager.playerCount > 0)
-            SceneManager.LoadScene("Road Crossing");
+            GameManager.PlayNewLevel();
     }
 
     public void Exit()
