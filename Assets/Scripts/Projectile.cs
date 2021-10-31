@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Projectile : MonoBehaviour
 {
@@ -8,7 +7,7 @@ public class Projectile : MonoBehaviour
     public Optional<float> explosionRadius = new Optional<float>(1.5f);
 
     //references
-    private PlayerInput player;
+    private Player player;
     private Rigidbody2D rb;
 
     //bullet info
@@ -17,7 +16,7 @@ public class Projectile : MonoBehaviour
     private Vector3 startPos;
 
 
-    public void Set(PlayerInput player, Weapon weapon, Vector2 direction)
+    public void Set(Player player, Weapon weapon, Vector2 direction)
     {
         this.player = player;
         this.weapon = weapon;
@@ -49,7 +48,7 @@ public class Projectile : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D collision)
     {
         //Check assumptions
-        if (collision.CompareTag("Player") && collision.GetComponent<PlayerInput>() == player)
+        if (collision.CompareTag("Player") && collision.GetComponent<Player>() == player)
             return;
         else if (weapon.explodes)
             Explode(explosionRadius.Value);
@@ -65,7 +64,7 @@ public class Projectile : MonoBehaviour
 
             case "NPC":
                 collision.GetComponent<NPC_Controller>().Die();
-                ScoreKeeper.RegisterNPCKills(PlayerManager.GetIndex(player));
+                ScoreKeeper.RegisterNPCKill(player);
                 break;
 
             case "Wall":
@@ -82,12 +81,11 @@ public class Projectile : MonoBehaviour
     private void DamagePlayer(Player otherPlayer)
     {
         otherPlayer.MarkWhoHitLast(player);
-        otherPlayer.TakeDamage(weapon.damage);
+        otherPlayer.TakeDamage(weapon.damage, player);
     }
 
     private void PassThroughWall()
     {
-
         weapon.damage /= 2;   // wallbang -> damage only half
         transform.localScale /= 2; //shrink by 2
     }
@@ -117,33 +115,6 @@ public class Projectile : MonoBehaviour
             }
         }
         Delete();
-    }
-
-    
-
-    private void AreaDamageEnemies(Vector3 location, float radius, float damage)
-    {
-        Collider2D[] objectsInRange = Physics2D.OverlapCircleAll(location, radius);
-
-        foreach (Collider2D collision in objectsInRange)
-        {
-
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                if (collision.GetComponent<Player>() != player)
-                    collision.GetComponent<Player>().TakeDamage(damage);
-            }
-            else if (collision.gameObject.CompareTag("NPC"))
-            {
-                Destroy(collision.gameObject);
-                Delete();
-            }
-
-            else
-            {
-                Delete();
-            }
-        }
     }
 
 }

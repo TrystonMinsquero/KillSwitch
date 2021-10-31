@@ -98,9 +98,9 @@ public class DebugController : MonoBehaviour
                     commandList.Add(new DebugCommand<bool>(_commandList[i].id, _commandList[i].description, _commandList[i].format,
                         (x) =>
                         {
-                            foreach (UnityEngine.InputSystem.PlayerInput player in PlayerManager.players)
-                                if (player != null && player.GetComponent<Player>() != null)
-                                    player.GetComponent<Player>().SetGodMode(x);
+                            foreach (Player player in PlayerManager.players)
+                                if (player != null && player != null)
+                                    player.SetGodMode(x);
                         }));
                     break;
 
@@ -153,7 +153,7 @@ public class DebugController : MonoBehaviour
         } // Old method of instatiating debug commands
     }
 
-    public static void OnToggleDebug(bool triggered, UnityEngine.InputSystem.PlayerInput player = null)
+    public static void OnToggleDebug(bool triggered, Player player = null)
     {
         if (PlayerManager.inLobby)
             return;

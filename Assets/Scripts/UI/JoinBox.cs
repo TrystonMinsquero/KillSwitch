@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class JoinBox : MonoBehaviour
 {
@@ -13,7 +10,7 @@ public class JoinBox : MonoBehaviour
     public Canvas joined;
     public Canvas empty;
 
-    public void AddPlayer(PlayerInput player)
+    public void AddPlayer(Player player)
     {
         empty.enabled = false;
         joined.enabled = true;
@@ -21,7 +18,7 @@ public class JoinBox : MonoBehaviour
         
     }
 
-    public void RemovePlayer(PlayerInput player)
+    public void RemovePlayer(Player player)
     {
         joined.enabled = false;
         empty.enabled = true;

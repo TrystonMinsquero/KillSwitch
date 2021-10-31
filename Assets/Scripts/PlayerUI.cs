@@ -2,12 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //Manages the input detection and visuals for a player
-[RequireComponent(typeof(Animator), typeof(PlayerInput), typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
 public class PlayerUI : MonoBehaviour
 {
     Controls controls;
     [HideInInspector]
-    public PlayerInput playerInput;
 
     public Behaviour[] behaviours; //behaviors that get disabled/reenabled onDeath
 
@@ -35,7 +34,6 @@ public class PlayerUI : MonoBehaviour
 
     public void AssignComponents()
     {
-        playerInput = GetComponent<PlayerInput>();
         anim = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
     }
@@ -129,7 +127,7 @@ public class PlayerUI : MonoBehaviour
         if (debugging)
             return;
         if (PlayerManager.inLobby || DebugController.debugJoin)
-            PlayerManager.instance.OnPlayerJoined(playerInput);
+            PlayerManager.instance.OnPlayerJoined(GetComponent<PlayerInput>());
 
     }
 
@@ -138,12 +136,12 @@ public class PlayerUI : MonoBehaviour
         if (debugging)
             return;
         if (PlayerManager.inLobby && !DebugController.debugMode)
-            PlayerManager.instance.OnPlayerLeft(playerInput);
+            PlayerManager.instance.OnPlayerLeft(GetComponent<PlayerInput>());
     }
 
     public void OnJoin(InputAction.CallbackContext ctx) => Join();
     public void OnLeave(InputAction.CallbackContext ctx) => Leave();
-    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, playerInput);
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, GetComponent<Player>());
     public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 
     private void OnEnable()

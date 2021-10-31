@@ -17,7 +17,7 @@ public class Leaderboard : MonoBehaviour
     {
         doneButton.Select();
         Populate();
-        for (int i = 0; i < ScoreKeeper.scores.Count; i++)
+        for (int i = 0; i < PlayerManager.playerCount; i++)
             slots[i].Show();
         GetComponent<Canvas>().enabled = true;
     }
@@ -25,11 +25,11 @@ public class Leaderboard : MonoBehaviour
     public void Populate()
     {
         int slotCount = 0;
-        foreach(PlayerInput player in PlayerManager.players)
+        foreach(Player player in PlayerManager.players)
         {
-            if (PlayerManager.GetIndex(player) >= 0)
+            if (player != null && PlayerManager.Contains(player))
             {
-                slots[slotCount].Fill(ScoreKeeper.GetScore(PlayerManager.GetIndex(player)));
+                slots[slotCount].Fill(ScoreKeeper.GetScore(player));
                 slotCount++;
             }
         }

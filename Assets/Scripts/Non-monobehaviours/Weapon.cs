@@ -26,7 +26,7 @@ public class Weapon : ScriptableObject
     private float nextFireTime;
 
 
-    public bool Shoot(UnityEngine.InputSystem.PlayerInput player, Vector2 direction)
+    public bool Shoot(Player player, Vector2 direction)
     {
         if (Time.time < nextFireTime)
             return false;

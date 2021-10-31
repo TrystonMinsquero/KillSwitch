@@ -10,11 +10,11 @@ public class PlayerManager : MonoBehaviour
     public static bool inLobby;
     public static bool startedInLobby;
     
-    public static PlayerInput[] players = new PlayerInput[8];
+    public static Player[] players = new Player[8];
     public static int playerCount;
 
     //used to view players in the editor
-    public PlayerInput[] playersDisplay;
+    public Player[] playersDisplay;
 
     private void Awake()
     {
@@ -35,37 +35,39 @@ public class PlayerManager : MonoBehaviour
     //Event that gets called when input is detected
     public void OnPlayerJoined(PlayerInput playerInput)
     {
-        AddPlayer(playerInput);
+        AddPlayer(playerInput.GetComponent<Player>());
+        ScoreKeeper.UpdateScores();
     }
 
     //Event that gets called when player leaves
     public void OnPlayerLeft(PlayerInput playerInput)
     {
-        Remove(playerInput);
+        Remove(playerInput.GetComponent<Player>());
+        ScoreKeeper.UpdateScores();
     }
 
     //kills all players (for debugging)
     public static void KillAll()
     {
         if (!inLobby)
-            foreach (PlayerInput player in players)
+            foreach (Player player in players)
                 if (player != null)
-                    player.GetComponent<Player>().Die();
+                    player.Die();
     }
     
     //kills all players (for debugging)
     public static void DisableAll()
     {
-        foreach (PlayerInput player in players)
+        foreach (Player player in players)
             if (player != null)
                 player.GetComponent<PlayerUI>().Disable();
     }
 
     public static void ResetAll()
     {
-        foreach (PlayerInput player in players)
+        foreach (Player player in players)
             if (player != null)
-                player.GetComponent<Player>().SetHealth();
+                player.SetHealth();
         DisableAll();
     }
 
@@ -80,7 +82,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     //Gets the index of player in the player array, returns -1 if not there
-    public static int GetIndex(PlayerInput _player)
+    public static int GetIndex(Player _player)
     {
         if (playerCount <= 0 || _player == null)
             return -1;
@@ -91,11 +93,11 @@ public class PlayerManager : MonoBehaviour
     }
 
     //returns true if player is already connected to player manager, false otherwise
-    public static bool Contains(PlayerInput _player)
+    public static bool Contains(Player _player)
     {
         if (playerCount <= 0)
             return false;
-        foreach (PlayerInput player in players)
+        foreach (Player player in players)
             if (player == _player)
                 return true;
         return false;
@@ -104,12 +106,17 @@ public class PlayerManager : MonoBehaviour
     //Sets up the PlayerManager depending on either in game or in lobby
     public static void OnSceneChange(bool _inLobby)
     {
+        //if going into the game from the lobby
+        if(inLobby && !_inLobby)
+        {
+            ScoreKeeper.ResetScores();
+        }
         inLobby = _inLobby;
         if (_inLobby)
         {
             Debug.Log("Setting up for Lobby");
             PlayerInputManager.instance.EnableJoining();
-            foreach (PlayerInput player in players)
+            foreach (Player player in players)
                 if(player)
                     player.GetComponent<PlayerUI>().Disable();
         }
@@ -117,7 +124,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("Setting up for Game");
             PlayerInputManager.instance.DisableJoining();
-            foreach (PlayerInput player in players)
+            foreach (Player player in players)
                 if(player)
                     player.GetComponent<PlayerUI>().Enable();
         }
@@ -134,27 +141,27 @@ public class PlayerManager : MonoBehaviour
     }
 
     //Will check coniditons to add a player and add them if conditions hold
-    private static void AddPlayer(PlayerInput playerInput)
+    private static void AddPlayer(Player player)
     {
         
-        if (Contains(playerInput))
+        if (Contains(player))
             return;
 
         if(NextPlayerSlot() < 0)
         {
-            Destroy(playerInput.gameObject);
+            Destroy(player.gameObject);
             return;
         }
 
         if(DebugController.debugJoin)
-            JoinPlayer(playerInput, !inLobby);
+            JoinPlayer(player, !inLobby);
         else if (inLobby)
         {
             if(playerCount < players.Length && LobbyManager.canJoin)
-                JoinPlayer(playerInput);
+                JoinPlayer(player);
             else
             {
-                Destroy(playerInput.gameObject);
+                Destroy(player.gameObject);
                 return;
             }
         }
@@ -162,20 +169,20 @@ public class PlayerManager : MonoBehaviour
     }
     
     //Properly adds a player to the game
-    private static void JoinPlayer(PlayerInput playerInput, bool inGame = false)
+    private static void JoinPlayer(Player player, bool inGame = false)
     {
-        playerInput.GetComponent<PlayerUI>().Disable();
+        player.GetComponent<PlayerUI>().Disable();
         if(inGame)
-            LevelManager.QueuePlayerToSpawn(playerInput.GetComponent<Player>());
+            LevelManager.QueuePlayerToSpawn(player);
         Debug.Log("Player Joined: Player " + (NextPlayerSlot() + 1));
-        playerInput.name = "Player " + (NextPlayerSlot() + 1);
-        players[NextPlayerSlot()] = playerInput;
+        player.name = "Player " + (NextPlayerSlot() + 1);
+        players[NextPlayerSlot()] = player;
         playerCount++;
-        playerInput.transform.parent = instance.transform;
+        player.transform.parent = instance.transform;
     }
 
     //Properly removes players from the game
-    private static void Remove(PlayerInput playerInput)
+    private static void Remove(Player playerInput)
     {
             
         if (inLobby && LobbyManager.canJoin)

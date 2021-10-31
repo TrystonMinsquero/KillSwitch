@@ -42547,12 +42547,16 @@ PrefabInstance:
       value: Managers
       objectReference: {fileID: 0}
     - target: {fileID: 8944215890265239802, guid: f08df64f0e596a246be377523b635562, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8944215890265239802, guid: f08df64f0e596a246be377523b635562, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -13593.505
+      value: -0.00002789856
       objectReference: {fileID: 0}
     - target: {fileID: 8944215890265239802, guid: f08df64f0e596a246be377523b635562, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3145.8977
+      value: -158.98291
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f08df64f0e596a246be377523b635562, type: 3}

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float dashDistance;
     public float dashChargeTime;
     public float dashSpeed;
+    public uint id; // index in playerManager
 
     [Header("Draggables")]
     public GameObject deathEffect;
@@ -34,7 +35,7 @@ public class Player : MonoBehaviour
     private bool charging;
     private bool charged;
     private bool dashing;
-    private int playerWhoHitMeLastIndex = -1;
+    private Player playerWhoHitMeLastIndex = null;
 
     private void Start()
     {
@@ -132,7 +133,7 @@ public class Player : MonoBehaviour
         if(!charging && !dashing)
         {
             //Will change position later
-            weaponHandler.Shoot(GetComponent<PlayerInput>(), lookDirection.normalized);
+            weaponHandler.Shoot(this, lookDirection.normalized);
         }
     }
 
@@ -172,9 +173,9 @@ public class Player : MonoBehaviour
         //Debug.Log("Estimated Time: " + maxDashTime);
     }
 
-    public void MarkWhoHitLast(PlayerInput otherPlayer)
+    public void MarkWhoHitLast(Player otherPlayer)
     {
-        playerWhoHitMeLastIndex = PlayerManager.GetIndex(otherPlayer);
+        playerWhoHitMeLastIndex = otherPlayer;
     }
 
     private void EndDash()
@@ -190,37 +191,46 @@ public class Player : MonoBehaviour
     }
 
     public void TakeOver(NPC_Controller npcc)
-    {
+    {   
+        //Switch attributes to NPCs
         NPC npc = npcc.npc;
         weaponHandler.SwitchWeapons(npcc.weaponHandler);
         GetComponent<PlayerUI>().SwitchVisuals(npcc);
-        EndDash();
         transform.position = npcc.transform.position;
         SetRotation(npcc.transform.rotation);
-        deathTime = Time.time + deathTime_MAX;
         npcc.Die();
-        int playerid = PlayerManager.GetIndex(GetComponent<PlayerInput>());
-        ScoreKeeper.RegisterTakeOver(playerid);
-        ScoreKeeper.RegisterNPCKills(playerid);
+
+        //Reset attributes
+        EndDash();
+        deathTime = Time.time + deathTime_MAX;
+        
+        //update score
+        ScoreKeeper.RegisterTakeOver(this);
+        ScoreKeeper.RegisterNPCKill(this);
     }
 
     public void TakeOver(Player player)
     {
+        //Check if not enough to ckill
         if (Time.time < player.deathTime - dashDamage)
         {
-            MarkWhoHitLast(player.GetComponent<PlayerInput>());
-            player.TakeDamage(dashDamage);
-            ScoreKeeper.RegisterTakeOver(PlayerManager.GetIndex(GetComponent<PlayerInput>()));
+            player.TakeDamage(dashDamage, this);
             return;
         }
-        Debug.Log(name + " Takes Over " + player.name);
+        //Switch attributes to other players
         transform.position = player.transform.position;
         SetRotation(player.lookDirection);
         weaponHandler.SwitchWeapons(player.weaponHandler);
         GetComponent<PlayerUI>().SwitchVisuals(player.GetComponent<PlayerUI>());
+        player.MarkWhoHitLast(this);
+
+        //Update Score
+        player.Die(); //This updates the score for kills and death
+        ScoreKeeper.RegisterTakeOver(this);
+
+        //Reset Attributes
         EndDash();
         deathTime = Time.time + deathTime_MAX;
-        player.Die();                
     }
 
     public Weapon GetWeapon()
@@ -285,11 +295,13 @@ public class Player : MonoBehaviour
 
     public Vector2 GetVelocity() { return rb.velocity; }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Player player)
     {
         if (godMode)
             return;
         SFXManager.Play("Hit");
+        if (player != null)
+            playerWhoHitMeLastIndex = player;
         if (damage <= 0)
             Die();
         else
@@ -298,13 +310,18 @@ public class Player : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log(name + " dies");
-        ScoreKeeper.ReigisterDeath(playerWhoHitMeLastIndex, PlayerManager.GetIndex(GetComponent<PlayerInput>()));
-        playerWhoHitMeLastIndex = -1;
+        //Debug.Log(name + " dies");
+        //Update score
+        ScoreKeeper.ReigisterDeath(this, playerWhoHitMeLastIndex);
+        playerWhoHitMeLastIndex = null;
+
+        //Disable
         MultipleTargetCamera.instance.targets.Remove(transform);
         GetComponent<PlayerUI>().Disable();
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
+
+        //Start Death animation
         Instantiate(deathEffect, transform.position, Quaternion.identity).transform.localScale = transform.localScale;
         StartCoroutine(WaitToRespawn(2.2f));
     }

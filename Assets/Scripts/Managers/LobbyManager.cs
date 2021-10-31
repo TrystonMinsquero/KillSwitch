@@ -30,7 +30,6 @@ public class LobbyManager : MonoBehaviour
         canJoin = true;
         howToPlayButton.Select();
         MusicManager.StartMusic(true);
-        ScoreKeeper.OnSceneChange();
     }
 
     private void Update()

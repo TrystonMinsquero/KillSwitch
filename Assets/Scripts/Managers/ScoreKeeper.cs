@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper instance;
-    public static List<Score> scores;
+    private static Score[] scores;
 
     private void Awake()
     {
@@ -15,105 +12,121 @@ public class ScoreKeeper : MonoBehaviour
         else
             instance = this;
 
-        OnSceneChange();
+        ResetScores(); //will get called by player manager later in case this is built first
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public static void OnSceneChange()
+    //returns the score of the player if in scores, otherwise creates a new Score with player index
+    public static Score GetScore(Player player)
     {
-        scores = new List<Score>();//Score[PlayerManager.playerCount];
-        ResetScores();
+        if (player == null)
+            Debug.LogError("Can't get score of no player");
+
+        int index = GetIndex(player);
+        if(scores != null && index >= 0 && index < scores.Length)
+            return scores[index];
+
+        Debug.LogWarning(player.name + " not in scores!");
+        return new Score(PlayerManager.GetIndex(player));
     }
 
-    public static Score GetScore(int playerIndex)
+    public static void ReigisterDeath(Player victim, Player killer)
     {
-        foreach (Score score in scores)
-            if (playerIndex == score.PlayerIndex)
-                return score;
 
-        Debug.LogWarning("player index not in scores!");
-        return new Score(playerIndex);
-    }
-
-    public static void ReigisterDeath(int killer, int victim)
-    {
-        if (victim < 0)
+        //victim killed themselves
+        scores[GetIndex(victim)].numDeaths += 1;
+        if (killer == null || victim == killer)
             return;
-        scores[killer].PlayerKills += 1;
-        scores[victim].NumDeaths += 1;
-        //for(int i = 0; i < scores.Count; i++)
-        //{
-        //    if (scores[i].PlayerIndex == killer)
-        //        scores[i].PlayerKills += 1;
-        //    if (scores[i].PlayerIndex == victim)
-        //        scores[i].NumDeaths += 1;
-
-        //}
+        scores[GetIndex(killer)].playerKills += 1;
     }
 
-    public static void RegisterTakeOver(int killer)
+    public static void RegisterTakeOver(Player killer)
     {
-        scores[killer].TakeOvers += 1;
+        if (killer != null)
+            scores[GetIndex(killer)].takeOvers += 1;
+
     }
 
     public static void ResetScores()
     {
+        scores = new Score[PlayerManager.playerCount];
         int j = 0;
-        //Simplify previous loop
-        scores.ForEach(x =>
-        {
-            if (PlayerManager.players[j] != null)
-            {
-                x = new Score(j, 0, 0, 0, 0);
-            }
-            j++;
-        });
 
-        //for(uint i = 0; i < PlayerManager.players.Length; i++)
+        ////Simplify previous loop
+        //scores.ForEach(x =>
         //{
-        //    if(PlayerManager.players[i] != null)
+        //    if (PlayerManager.players[j] != null)
         //    {
-        //        scores[j] = new Score();
-        //        scores[j].PlayerIndex = i;
-        //        scores[j].PlayerKills = 0;
-        //        scores[j].NumDeaths = 0;
-        //        scores[j].NpcKills = 0;
-        //        scores[j].TakeOvers = 0;
+        //        x = new Score(j, 0, 0, 0, 0);
         //    }
         //    j++;
-        //}
+        //});
+
+        //has to parse through all of player manager players because they're might be holes in the array
+        //i.e. players = {player 1, null, null, player 4} then scores should only have a size of 2
+        for (int i = 0; i < PlayerManager.players.Length; i++)
+        {
+            if (PlayerManager.players[i] != null)
+            {
+                scores[j] = new Score(i);
+                j++;
+            }
+        }
+        //Debug.Log("Scores:");
+        //foreach (Score score in scores)
+        //    Debug.Log(score.playerIndex);
     }
 
-    public static void RegisterNPCKills(int playerIndex)
+    //for when a player leaves or joins
+    public static void UpdateScores()
     {
-        scores[playerIndex].NpcKills += 1;
+        Score[] updatedScores = new Score[PlayerManager.playerCount];
+        foreach (Player player in PlayerManager.players)
+            if (player != null)
+                updatedScores[GetIndex(player)] = GetScore(player);
+        scores = updatedScores;
+            
+    }
+
+    public static void RegisterNPCKill(Player player)
+    {
+        if(player != null)
+            scores[GetIndex(player)].npcKills += 1;
+    }
+
+    //gets the theoretical index of the player in scores
+    private static int GetIndex(Player player)
+    {
+        int index = 0;
+        foreach (Player _player in PlayerManager.players)
+            if (player != null)
+            {
+                if(player == _player)
+                    return index;
+                index++;
+            }
+        return -1;
     }
 
 }
 
-public class Score
+public struct Score
 {
-    //overloading constructors;
-    public Score(int pIndx)
-    {
-        //Don't remove this empty constructor.
-        PlayerIndex = pIndx;
-    }
+
+    public int playerIndex;
+    public int playerKills;
+    public int numDeaths;
+    public int npcKills;
+    public int takeOvers; 
 
     //Constructor to simplify reseting and Initializing scores for each player.
-    public Score(int pIndx, int pKills, int numDeaths, int npcKills, int takeOvers)
+    public Score(int pIndx, int pKills = 0, int numDeaths = 0, int npcKills = 0, int takeOvers = 0)
     {
-        PlayerIndex = pIndx;
-        PlayerKills = pKills;
-        NumDeaths = numDeaths;
-        NpcKills = npcKills;
-        TakeOvers = takeOvers;
+        this.playerIndex = pIndx;
+        this.playerKills = pKills;
+        this.numDeaths = numDeaths;
+        this.npcKills = npcKills;
+        this.takeOvers = takeOvers;
     }
-
-    public int PlayerIndex { get; set; }
-    public int PlayerKills { get; set; }
-    public int NumDeaths { get; set; }
-    public int NpcKills { get; set; }
-    public int TakeOvers { get; set; }
 
 }

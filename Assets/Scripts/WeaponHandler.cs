@@ -71,7 +71,7 @@ public class WeaponHandler : MonoBehaviour
         flashAnim.runtimeAnimatorController = newWeapon.flashAoc;
     }
 
-    public void Shoot(UnityEngine.InputSystem.PlayerInput player, Vector2 direction)
+    public void Shoot(Player player, Vector2 direction)
     {
         if(weapon != null)
         {

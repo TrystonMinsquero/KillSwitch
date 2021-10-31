@@ -55,13 +55,12 @@ public class LevelManager : MonoBehaviour
         PlayerManager.OnSceneChange(false);
         if (!PlayerManager.startedInLobby)
             PlayerManager.SetJoinable(true);
-        ScoreKeeper.OnSceneChange();
         MusicManager.StartMusic(false);
 
         //Adds all the players to the spawn queue
-        foreach (PlayerInput playerInput in PlayerManager.players)
-            if(playerInput)
-                QueuePlayerToSpawn(playerInput.GetComponent<Player>());
+        foreach (Player player in PlayerManager.players)
+            if(player)
+                QueuePlayerToSpawn(player);
     }
 
     void Update()

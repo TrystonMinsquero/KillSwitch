@@ -114,7 +114,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSpawn(InputAction.CallbackContext ctx) => spawnInput = ctx.action.triggered;
 
-    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, playerInput);
+    public void OnToggleDebug(InputAction.CallbackContext ctx) => DebugController.OnToggleDebug(ctx.action.triggered, player);
 
     public void OnReturn(InputAction.CallbackContext ctx) => DebugController.OnReturn(ctx.action.triggered);
 
