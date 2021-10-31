@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScoreKeeper : MonoBehaviour
 {
     public static ScoreKeeper instance;
-    public static Score[] scores;
+    public static List<Score> scores;
 
     private void Awake()
     {
@@ -21,63 +21,102 @@ public class ScoreKeeper : MonoBehaviour
 
     public static void OnSceneChange()
     {
-        scores = new Score[PlayerManager.playerCount];
+        scores = new List<Score>();//Score[PlayerManager.playerCount];
         ResetScores();
     }
 
     public static Score GetScore(int playerIndex)
     {
         foreach (Score score in scores)
-            if (playerIndex == score.playerIndex)
+            if (playerIndex == score.PlayerIndex)
                 return score;
 
         Debug.LogWarning("player index not in scores!");
-        return new Score();
+        return new Score(playerIndex);
     }
 
     public static void ReigisterDeath(int killer, int victim)
     {
+        //If NPC then pass victim number as -1;
+        scores[killer].PlayerKills += 1;
         if (victim < 0)
-            return;
-        for(int i = 0; i < scores.Length; i++)
-        {
-            if (scores[i].playerIndex == killer)
-                scores[i].playerKills += 1;
-            if (scores[i].playerIndex == victim)
-                scores[i].timesDied += 1;
+            return;        
+        scores[victim].NumDeaths += 1;
+        //for(int i = 0; i < scores.Count; i++)
+        //{
+        //    if (scores[i].PlayerIndex == killer)
+        //        scores[i].PlayerKills += 1;
+        //    if (scores[i].PlayerIndex == victim)
+        //        scores[i].NumDeaths += 1;
 
+        //}
+    }
+
+    public static void RegisterTakeOver(int killer, int victim)
+    {
+        scores[killer].TakeOvers += 1;
+        //Assign victim to less than 0 for when taking over NPC 
+        if (victim < 0)
+        {            
+            return;
         }
+        scores[victim].NumDeaths += 1;
+
     }
 
     public static void ResetScores()
     {
         int j = 0;
-        for(uint i = 0; i < PlayerManager.players.Length; i++)
+        //Simplify previous loop
+        scores.ForEach(x =>
         {
-            if(PlayerManager.players[i] != null)
+            if (PlayerManager.players[j] != null)
             {
-                scores[j] = new Score();
-                scores[j].playerIndex = i;
-                scores[j].playerKills = 0;
-                scores[j].timesDied = 0;
-                scores[j].npcKills = 0;
-                scores[j].takeOvers = 0;
+                x = new Score(j, 0, 0, 0, 0);
             }
             j++;
-        }
-            
-    }
+        });
 
+        //for(uint i = 0; i < PlayerManager.players.Length; i++)
+        //{
+        //    if(PlayerManager.players[i] != null)
+        //    {
+        //        scores[j] = new Score();
+        //        scores[j].PlayerIndex = i;
+        //        scores[j].PlayerKills = 0;
+        //        scores[j].NumDeaths = 0;
+        //        scores[j].NpcKills = 0;
+        //        scores[j].TakeOvers = 0;
+        //    }
+        //    j++;
+        //}
+    }
 
 }
 
-public struct Score
+public class Score
 {
-    public uint playerIndex;
-    public uint playerKills;
-    public uint timesDied;
-    public uint npcKills;
-    public uint takeOvers;
+    //overloading constructors;
+    public Score(int pIndx)
+    {
+        //Don't remove this empty constructor.
+        PlayerIndex = pIndx;
+    }
 
+    //Constructor to simplify reseting and Initializing scores for each player.
+    public Score(int pIndx, int pKills, int numDeaths, int npcKills, int takeOvers)
+    {
+        PlayerIndex = pIndx;
+        PlayerKills = pKills;
+        NumDeaths = numDeaths;
+        NpcKills = npcKills;
+        TakeOvers = takeOvers;
+    }
+
+    public int PlayerIndex { get; set; }
+    public int PlayerKills { get; set; }
+    public int NumDeaths { get; set; }
+    public int NpcKills { get; set; }
+    public int TakeOvers { get; set; }
 
 }

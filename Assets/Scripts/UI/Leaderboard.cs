@@ -17,7 +17,7 @@ public class Leaderboard : MonoBehaviour
     {
         doneButton.Select();
         Populate();
-        for (int i = 0; i < ScoreKeeper.scores.Length; i++)
+        for (int i = 0; i < ScoreKeeper.scores.Count; i++)
             slots[i].Show();
         GetComponent<Canvas>().enabled = true;
     }
