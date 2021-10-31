@@ -199,8 +199,9 @@ public class Player : MonoBehaviour
         SetRotation(npcc.transform.rotation);
         deathTime = Time.time + deathTime_MAX;
         npcc.Die();
-        //We Assign victim to -1 because this is NPC takeover.
-        ScoreKeeper.RegisterTakeOver(PlayerManager.GetIndex(GetComponent<PlayerInput>()), -1);
+        int playerid = PlayerManager.GetIndex(GetComponent<PlayerInput>());
+        ScoreKeeper.RegisterTakeOver(playerid);
+        ScoreKeeper.RegisterNPCKills(playerid);
     }
 
     public void TakeOver(Player player)
@@ -209,6 +210,7 @@ public class Player : MonoBehaviour
         {
             MarkWhoHitLast(player.GetComponent<PlayerInput>());
             player.TakeDamage(dashDamage);
+            ScoreKeeper.RegisterTakeOver(PlayerManager.GetIndex(GetComponent<PlayerInput>()));
             return;
         }
         Debug.Log(name + " Takes Over " + player.name);
@@ -218,9 +220,7 @@ public class Player : MonoBehaviour
         GetComponent<PlayerUI>().SwitchVisuals(player.GetComponent<PlayerUI>());
         EndDash();
         deathTime = Time.time + deathTime_MAX;
-        player.Die();
-        //Killer is Player and victim is last player hit.
-        ScoreKeeper.RegisterTakeOver(PlayerManager.GetIndex(GetComponent<PlayerInput>()), playerWhoHitMeLastIndex);
+        player.Die();                
     }
 
     public Weapon GetWeapon()

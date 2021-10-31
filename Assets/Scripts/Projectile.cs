@@ -65,6 +65,7 @@ public class Projectile : MonoBehaviour
 
             case "NPC":
                 collision.GetComponent<NPC_Controller>().Die();
+                ScoreKeeper.RegisterNPCKills(PlayerManager.GetIndex(player));
                 break;
 
             case "Wall":
@@ -113,7 +114,6 @@ public class Projectile : MonoBehaviour
             else if (collision.gameObject.CompareTag("NPC"))
             {
                 collision.GetComponent<NPC_Controller>().Die();
-                
             }
         }
         Delete();

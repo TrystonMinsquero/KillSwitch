@@ -37,10 +37,9 @@ public class ScoreKeeper : MonoBehaviour
 
     public static void ReigisterDeath(int killer, int victim)
     {
-        //If NPC then pass victim number as -1;
-        scores[killer].PlayerKills += 1;
         if (victim < 0)
-            return;        
+            return;
+        scores[killer].PlayerKills += 1;
         scores[victim].NumDeaths += 1;
         //for(int i = 0; i < scores.Count; i++)
         //{
@@ -52,16 +51,9 @@ public class ScoreKeeper : MonoBehaviour
         //}
     }
 
-    public static void RegisterTakeOver(int killer, int victim)
+    public static void RegisterTakeOver(int killer)
     {
         scores[killer].TakeOvers += 1;
-        //Assign victim to less than 0 for when taking over NPC 
-        if (victim < 0)
-        {            
-            return;
-        }
-        scores[victim].NumDeaths += 1;
-
     }
 
     public static void ResetScores()
@@ -90,6 +82,11 @@ public class ScoreKeeper : MonoBehaviour
         //    }
         //    j++;
         //}
+    }
+
+    public static void RegisterNPCKills(int playerIndex)
+    {
+        scores[playerIndex].NpcKills += 1;
     }
 
 }
