@@ -52,6 +52,22 @@ public class PlayerManager : MonoBehaviour
                 if (player != null)
                     player.GetComponent<Player>().Die();
     }
+    
+    //kills all players (for debugging)
+    public static void DisableAll()
+    {
+        foreach (PlayerInput player in players)
+            if (player != null)
+                player.GetComponent<PlayerUI>().Disable();
+    }
+
+    public static void ResetAll()
+    {
+        foreach (PlayerInput player in players)
+            if (player != null)
+                player.GetComponent<Player>().SetHealth();
+        DisableAll();
+    }
 
     //Sets "EnableJoining" on the manager to true, allowing new inputs to join
     public static void SetJoinable(bool enabled)

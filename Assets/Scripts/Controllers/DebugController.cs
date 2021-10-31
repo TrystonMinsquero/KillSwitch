@@ -164,11 +164,12 @@ public class DebugController : MonoBehaviour
         {
             input.ActivateInputField();
             input.Select();
+            input.enabled = true;
         }
         else
         {
             input.DeactivateInputField();
-            UnityEngine.EventSystems.EventSystem.current.SetSelectedGameObject(null);
+            input.enabled = false;
             input.text = "";
         }
 
@@ -178,6 +179,13 @@ public class DebugController : MonoBehaviour
             player.GetComponent<PlayerController>().Debug(debugMode);
         }
         debugCanvas.enabled = debugMode;
+    }
+
+    private void OnDestroy()
+    {
+        input.DeactivateInputField();
+        input.enabled = false;
+        input.text = "";
     }
 
     public static void OnReturn(bool triggered)

@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private float movementSpeed;
 
     //Times
-    private float timeRemaing;
+    private float timeRemaining;
     private float deathTime;
 
     //Statuses
@@ -44,6 +44,21 @@ public class Player : MonoBehaviour
         weaponHandler.Set();
     }
 
+    //Sets health to full if no arguments or greater than deathTime_MAX
+    //Otherwise sets health
+    public void SetHealth(float health = -1)
+    {
+        if( health < 0 || health >= deathTime_MAX)
+        {
+            deathTime = deathTime_MAX + Time.time;
+        }
+        else
+        {
+            deathTime = health + Time.time;
+        }
+        timeRemaining = deathTime - Time.time;
+    }
+
     public void AssignComponents()
     {
         GetComponent<PlayerUI>().AssignComponents();
@@ -55,7 +70,7 @@ public class Player : MonoBehaviour
     {
         if(Time.time > deathTime && !godMode) 
             Die();
-        timeRemaing =  !godMode ? deathTime - Time.time : deathTime_MAX;
+        timeRemaining =  !godMode ? deathTime - Time.time : deathTime_MAX;
 
         if (charged)
             StartCoroutine(Dash());
@@ -215,7 +230,7 @@ public class Player : MonoBehaviour
 
     public float GetCurrentHealth()
     {
-        return timeRemaing / deathTime_MAX;
+        return timeRemaining / deathTime_MAX;
     }
 
     public void SetWeaponActive(bool enable)

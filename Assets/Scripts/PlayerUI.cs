@@ -21,11 +21,14 @@ public class PlayerUI : MonoBehaviour
     private Animator anim;
     private AnimatorOverrideController aoc;
 
+
+    private Vector3 healthBarOffset;
     bool debugging;
 
     private void Awake()
     {
         controls = new Controls();
+        healthBarOffset = healthBarStart.position - transform.position;
         DontDestroyOnLoad(this);
 
     }
@@ -41,7 +44,7 @@ public class PlayerUI : MonoBehaviour
     {
         healthBar = Instantiate(healthBarPrefab).GetComponentInChildren<HealthBar>();
         if(healthBarStart != null)
-            healthBar.offset = healthBarStart.position - transform.position;
+            healthBar.offset = healthBarOffset;
         healthBar.SetPosition(transform.position);
     }
 

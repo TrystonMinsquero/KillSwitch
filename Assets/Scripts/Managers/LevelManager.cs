@@ -184,9 +184,8 @@ public class LevelManager : MonoBehaviour
     private void EndLevel()
     {
         timeText.text = "It's Over!";
-        foreach (PlayerInput player in PlayerManager.players)
-            if(player != null)
-                player.GetComponent<PlayerUI>().Disable();
+        DebugController.OnToggleDebug(false);
+        PlayerManager.ResetAll();
         leaderboard.Display();
     }
 
