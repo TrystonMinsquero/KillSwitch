@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     public static void PlayNewLevel()
     {
         int sceneIndex = GetNotRecentRandomSceneIndex();
-        Debug.Log(sceneIndex);
+        //Debug.Log(sceneIndex);
         levelsPlayed.Add(sceneIndex);
         SceneManager.LoadScene(sceneIndex);
     }

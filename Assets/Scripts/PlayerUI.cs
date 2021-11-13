@@ -46,11 +46,6 @@ public class PlayerUI : MonoBehaviour
         healthBar.SetPosition(transform.position);
     }
 
-    public void Start()
-    {
-        if (healthBar == null)
-            InstantiateHealthBar();
-    }
 
     private void Update()
     {
@@ -59,8 +54,6 @@ public class PlayerUI : MonoBehaviour
             healthBar.SetPosition(transform.position);
             healthBar.SetHealth(GetComponent<Player>().GetCurrentHealth());
         }
-        else
-            InstantiateHealthBar();
     }
 
     //enables the player for gameplay
@@ -90,9 +83,8 @@ public class PlayerUI : MonoBehaviour
         GetComponent<PlayerController>().ControlsActive(false);
         foreach (Behaviour component in behaviours)
             component.enabled = false;
-        if (healthBar == null)
-            InstantiateHealthBar();
-        healthBar.Disable();
+        if (healthBar != null)
+            Destroy(healthBar.gameObject);
     }
 
     public void SetAnimations(string stateName)
@@ -115,7 +107,7 @@ public class PlayerUI : MonoBehaviour
         anim.runtimeAnimatorController = aoc;
     }
 
-    public void Debug(bool debugging)
+    public void SetDebug(bool debugging)
     {
         this.debugging = debugging;
     }

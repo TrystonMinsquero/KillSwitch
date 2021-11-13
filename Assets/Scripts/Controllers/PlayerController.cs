@@ -16,11 +16,12 @@ public class PlayerController : MonoBehaviour
     bool dashInput;
     bool shootInput;
     bool spawnInput;
+    bool isKeyboardAndMouse;
 
     bool debugging;
 
 
-    public void Debug(bool debugging)
+    public void SetDebug(bool debugging)
     {
         this.debugging = debugging;
     }
@@ -49,7 +50,6 @@ public class PlayerController : MonoBehaviour
     {
         controls = new Controls();
         AssignComponents();
-
     }
 
     private void FixedUpdate()
@@ -64,7 +64,12 @@ public class PlayerController : MonoBehaviour
     {
         if (debugging)
             return;
+
         //Look
+        if (playerInput.currentControlScheme == "Keyboard&Mouse")
+        {
+            lookInput = (Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - transform.position).normalized;
+        }
         player.Look(lookInput);
 
         //Dash
@@ -74,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
         //Shoot
         if (shootInput)
-            player.Shoot();     
+            player.Shoot();
 
     }
 
@@ -103,10 +108,10 @@ public class PlayerController : MonoBehaviour
     public void OnLeave(InputAction.CallbackContext ctx) => Leave();
 
     //Gamplay Button Actions
-    
+
     public void OnMove(InputAction.CallbackContext ctx) => movementInput = ctx.ReadValue<Vector2>();
 
-    public void OnLook(InputAction.CallbackContext ctx) => lookInput = ctx.ReadValue<Vector2>();
+    public void OnLook(InputAction.CallbackContext ctx) =>  lookInput = ctx.ReadValue<Vector2>(); 
 
     public void OnDash(InputAction.CallbackContext ctx) => dashInput = ctx.action.triggered;
 

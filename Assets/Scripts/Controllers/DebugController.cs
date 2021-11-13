@@ -175,8 +175,8 @@ public class DebugController : MonoBehaviour
 
         if (player != null)
         {
-            player.GetComponent<PlayerUI>().Debug(debugMode);
-            player.GetComponent<PlayerController>().Debug(debugMode);
+            player.GetComponent<PlayerUI>().SetDebug(debugMode);
+            player.GetComponent<PlayerController>().SetDebug(debugMode);
         }
         debugCanvas.enabled = debugMode;
     }

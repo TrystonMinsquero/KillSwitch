@@ -172,7 +172,7 @@ public class PlayerManager : MonoBehaviour
     private static void JoinPlayer(Player player, bool inGame = false)
     {
         player.GetComponent<PlayerUI>().Disable();
-        if(inGame)
+        if (inGame)
             LevelManager.QueuePlayerToSpawn(player);
         Debug.Log("Player Joined: Player " + (NextPlayerSlot() + 1));
         player.name = "Player " + (NextPlayerSlot() + 1);
@@ -182,18 +182,19 @@ public class PlayerManager : MonoBehaviour
     }
 
     //Properly removes players from the game
-    private static void Remove(Player playerInput)
+    private static void Remove(Player player)
     {
             
         if (inLobby && LobbyManager.canJoin)
         {
             for (int i = 0; i < playerCount; i++)
             {
-                if (players[i] != null && players[i] == playerInput)
+                if (players[i] != null && players[i] == player)
                 {
                     players[i] = null;
-                    Debug.Log("Player Left: " + playerInput.name);
-                    Destroy(playerInput.gameObject);
+                    Debug.Log("Player Left: " + player.name);
+                    player.GetComponent<PlayerUI>().Disable();
+                    Destroy(player.gameObject);
                     playerCount--;
                     return;
                 }
