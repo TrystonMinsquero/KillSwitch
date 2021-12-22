@@ -20,7 +20,7 @@ public struct Optional<T>
     public bool Enabled => enabled;
     public T Value => value;
 }
-
+/*
 namespace Editor
 {
     [CustomPropertyDrawer(typeof(Optional<>))]
@@ -58,3 +58,4 @@ namespace Editor
         }
     }
 }
+*/
