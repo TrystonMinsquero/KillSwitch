@@ -19,7 +19,7 @@ MonoBehaviour:
   weaponType: 1
   peircing: 1
   explodes: 0
-  fireDelay: 0.08
+  fireDelay: 1.2
   projectileSpeed: 15
-  range: 50
-  damage: 0
+  range: 8
+  damage: 3
